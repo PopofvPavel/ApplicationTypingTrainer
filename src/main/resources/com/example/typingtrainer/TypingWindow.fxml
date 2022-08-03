@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="1104.0" prefWidth="1801.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.TypingWindowController">
+   <children>
+      <AnchorPane layoutX="-8.0" layoutY="-7.0" prefHeight="1116.0" prefWidth="1809.0" style="-fx-background-color: #2E3348;">
+         <children>
+            <Text fx:id="textField" fill="WHITE" layoutX="387.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Malfoy and Crabbe weren't there yet. The crystal trophy cases glimmered where the moonlight caught them. Cups, shields, plates, and statues winked silver and gold in the darkness. They edged along the walls, keeping their eyes on the doors at either end of the room. Harry took out his wand in case Malfoy leapt in and started at once. The minutes crept by." textAlignment="JUSTIFY" wrappingWidth="1076.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Text fill="#bf7a48" layoutX="98.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paragraph number" textAlignment="CENTER">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Button fx:id="nextParagraphButton" layoutX="843.0" layoutY="735.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="120.0" text="Next" textAlignment="CENTER" textFill="#ee8b35">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <TextArea fx:id="inputText" layoutX="387.0" layoutY="253.0" prefHeight="208.0" prefWidth="1076.0" promptText="Start typing text here">
+               <font>
+                  <Font name="Bookman Old Style" size="27.0" />
+               </font>
+            </TextArea>
+            <Text fx:id="paragraphNumberLabel" fill="#ff9202" layoutX="147.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="57.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Button fx:id="previousParagraphButton" layoutX="387.0" layoutY="735.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="138.0" text="Prevoius" textAlignment="CENTER" textFill="#ee8b35">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

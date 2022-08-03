@@ -2,12 +2,17 @@ package com.example.typingtrainer;
 ///com.example.typingtrainer.MainWindowController
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -44,9 +49,8 @@ public class MainWindowController {
 
     @FXML
     void initialize() {
-        checkDataButton.setOnAction(actionEvent -> {
-            onCheckDataButtonClick();
-        });
+        checkDataButton.setOnAction(actionEvent -> onCheckDataButtonClick());
+        startButton.setOnAction(actionEvent -> openTypingWindow());
 
     }
 
@@ -61,6 +65,9 @@ public class MainWindowController {
 
 
             if (isParagraphCorrect && isPathCorrect) {
+
+                int paragraph = Integer.parseInt(paragraphNumberTextField.getText());
+                ProgramDataContainer.setParagraph(paragraph);
                 checkDateTextField.setText("Data is correct" +  ProgramDataContainer.getFile().length());
             } else {
                 checkDateTextField.setText("Data is incorrect" );
@@ -79,7 +86,23 @@ public class MainWindowController {
         }
 
     }
+    private void openTypingWindow(){
+        startButton.getScene().getWindow().hide();
 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("TypingWindow.fxml"));
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
     private boolean checkParagraphData() throws RuntimeException {
         try {
             int paragraph = Integer.parseInt(paragraphNumberTextField.getText());
