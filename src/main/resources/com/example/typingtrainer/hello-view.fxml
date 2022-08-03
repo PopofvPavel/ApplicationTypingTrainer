@@ -7,12 +7,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1100.0" prefWidth="1800.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.MainWindowController">
    <children>
-      <TextField fx:id="pathToFileTextField" layoutX="67.0" layoutY="612.0" prefHeight="55.0" prefWidth="468.0" promptText="Enter a path to the file" style="-fx-border-radius: 20;">
+      <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="67.0" layoutY="612.0" prefHeight="55.0" prefWidth="468.0" promptText="Enter a path to the file" style="-fx-border-radius: 20;" text="D:\AARadik\Java\pr\Prob\Books\Harry Potter\CHAPTERS\CHAPTER FOUR.doc">
          <font>
             <Font size="22.0" />
          </font>
       </TextField>
-      <TextField fx:id="paragraphNumberTextField" layoutX="67.0" layoutY="687.0" prefHeight="55.0" prefWidth="279.0" promptText="Enter a paragraph number" style="-fx-border-radius: 20;">
+      <TextField fx:id="paragraphNumberTextField" focusTraversable="false" layoutX="67.0" layoutY="687.0" prefHeight="55.0" prefWidth="286.0" promptText="Enter a paragraph number" style="-fx-border-radius: 20;" text="1">
          <font>
             <Font size="22.0" />
          </font>
@@ -22,12 +22,12 @@
             <Font size="28.0" />
          </font>
       </Button>
-      <Button fx:id="checkDataButton" layoutX="67.0" layoutY="771.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="109.0" text="Check">
+      <Button fx:id="checkDataButton" layoutX="67.0" layoutY="771.0" mnemonicParsing="false" onAction="#onCheckDataButtonClick" prefHeight="55.0" prefWidth="109.0" text="Check">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="checkDateTextField" layoutX="187.0" layoutY="771.0" prefHeight="55.0" prefWidth="347.0" promptText="Here you will see check result" style="-fx-border-radius: 20;">
+      <TextField fx:id="checkDateTextField" focusTraversable="false" layoutX="187.0" layoutY="771.0" prefHeight="55.0" prefWidth="347.0" promptText="Here you will see check result" style="-fx-border-radius: 20;">
          <font>
             <Font size="22.0" />
          </font>

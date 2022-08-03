@@ -1,6 +1,7 @@
 package com.example.typingtrainer;
 ///com.example.typingtrainer.MainWindowController
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -49,13 +52,35 @@ public class MainWindowController {
 
     @FXML
     void initialize() {
+        startButton.requestFocus();
         checkDataButton.setOnAction(actionEvent -> onCheckDataButtonClick());
-        startButton.setOnAction(actionEvent -> openTypingWindow());
+        startButton.setOnAction(actionEvent -> {
+            try {
+                onStartButtonClick();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
+    }
+
+    @FXML
+    private void onStartButtonClick() throws IOException {
+        if (checkData()) {
+            openTypingWindow();
+        }
+        //checkData();
 
     }
 
     @FXML
     protected void onCheckDataButtonClick() {
+        checkData();
+
+    }
+
+    private boolean checkData() {
         boolean isParagraphCorrect = false;
         boolean isPathCorrect = false;
 
@@ -68,9 +93,11 @@ public class MainWindowController {
 
                 int paragraph = Integer.parseInt(paragraphNumberTextField.getText());
                 ProgramDataContainer.setParagraph(paragraph);
-                checkDateTextField.setText("Data is correct" +  ProgramDataContainer.getFile().length());
+                checkDateTextField.setText("Data is correct" + ProgramDataContainer.getFile().length());
+                return true;
             } else {
-                checkDateTextField.setText("Data is incorrect" );
+                checkDateTextField.setText("Data is incorrect");
+                return false;
             }
 
         } catch (FileNotFoundException exception) {
@@ -84,25 +111,48 @@ public class MainWindowController {
         } catch (InvalidObjectException exception) {
             checkDateTextField.setText(exception.getMessage());
         }
-
+        return false;
     }
-    private void openTypingWindow(){
+
+    private void openTypingWindow() throws IOException {
+
         startButton.getScene().getWindow().hide();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("TypingWindow.fxml"));
 
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loader.load();
+        TypingWindowController controller = loader.getController();
 
         Parent root = loader.getRoot();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                KeyCode code = keyEvent.getCode();
+                System.out.println("You pressed key:" + code);
+                switch (code) {
+                    case ALT:
+                    case ESCAPE:
+                        controller.getNextParagraphButton().requestFocus();
+                        break;
+                    case CONTROL:
+                        break;
+                    default:
+                        controller.getInputText().requestFocus();
+                        break;
+
+
+                }
+            }
+        });
         stage.showAndWait();
     }
+
     private boolean checkParagraphData() throws RuntimeException {
         try {
             int paragraph = Integer.parseInt(paragraphNumberTextField.getText());

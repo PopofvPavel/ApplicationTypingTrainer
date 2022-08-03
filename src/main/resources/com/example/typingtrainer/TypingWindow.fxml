@@ -40,6 +40,11 @@
                   <Font size="24.0" />
                </font>
             </Button>
+            <Button fx:id="backButton" layoutX="181.0" layoutY="933.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="147.0" text="Go back">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>
