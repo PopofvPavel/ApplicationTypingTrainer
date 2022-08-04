@@ -42,6 +42,7 @@ public class TypingWindowController {
             throw new RuntimeException(e);
         }
     }
+
     TypeChar[] typeChars;
     private ArrayList<String> paragraphs = text.getParagraphs();
 
@@ -50,7 +51,19 @@ public class TypingWindowController {
 
     @FXML
     private Text paragraphNumberLabel;
+    @FXML
+    private Text wordsAmount;
 
+    @FXML
+    private Text wordsTypedCorrect;
+    @FXML
+    private Text WPM;
+
+    @FXML
+    private Text accuracyPercent;
+
+    @FXML
+    private Text accuracyStringText;
     @FXML
     private Text paragraphsAmount;
 
@@ -169,10 +182,19 @@ public class TypingWindowController {
         System.out.println(this.paragraphs.get(this.paragraphNumber - 1));
 
         String typedText = inputText.getText();
-        setInputtedTextInTypeChars(typedText);
-
         ArrayList<String> words = getInputTextWords(typedText);
         ArrayList<String> markedWords = getMarkedWords(words);
+        int correctTypedWordsAmount = getCorrectTypedWordsAmount(words);
+        this.wordsTypedCorrect.setText(Integer.toString(correctTypedWordsAmount));
+
+        typedText = getClearedTypedTextFromSlashes(typedText);
+
+
+        setInputtedTextInTypeChars(typedText);
+        String accuracyString = processTypedCharsAccuracy(typeChars);//set field accuracyPercent
+        //accuracyStringText.setText(accuracyString);
+
+
 //        for (String markedWord : markedWords) {
 //            MarkedWordsContainer.writeWordIntoLibrary(markedWord);
 //        }
@@ -181,32 +203,92 @@ public class TypingWindowController {
         System.out.println("Marked words:" + markedWords);
 
 
-
-
     }
 
-    private ArrayList<String> getMarkedWords(ArrayList<String> words) {
-        return null;
+    private int getCorrectTypedWordsAmount(ArrayList<String> words) {
+        String[] wordsInText = textField.getText().split(" ");
+        int correctTypedWordsAmount = 0;
+        String[] printedWords = new String[words.size()];
+        int j = 0;
+        for(String word: words){
+            word.replace('/', ' ');
+            printedWords[j] = word.trim();
+            j++;
+        }
+
+        for(int i = 0; i < words.size(); i++){
+            if(printedWords[i].equals(wordsInText[i])){
+                correctTypedWordsAmount++;
+            }
+        }
+        return correctTypedWordsAmount;
+    }
+
+    private String getClearedTypedTextFromSlashes(String typedText) {
+        String textWithoutSlashes = typedText.replace('/', ' ');
+        String clearedText = textWithoutSlashes.replaceAll("  ", " ");//for double spaces
+
+        return clearedText;
+    }
+
+    private String processTypedCharsAccuracy(TypeChar[] typeChars) {
+        StringBuilder accuracyResult = new StringBuilder();
+        int misprinted = 0;
+        int correctPrinted = 0;
+
+        for (int i = 0; i < typeChars.length; i++) {
+            if (!typeChars[i].isTypedCorrect()) {
+                accuracyResult.append("X");
+                misprinted++;
+            } else {
+                accuracyResult.append("V");
+                correctPrinted++;
+
+            }
+        }
+        double percentOfTyping = (double) correctPrinted / (double) typeChars.length * 100;
+        this.accuracyPercent.setText(Double.toString(percentOfTyping));
+
+        return accuracyResult.toString();
     }
 
     private ArrayList<String> getInputTextWords(String typedText) {
-        return null;
+        ArrayList<String> words = new ArrayList<String>();
+        String[] wordsSplit = typedText.split(" ");
+        for (String word : wordsSplit) {
+            words.add(word);
+        }
+
+
+        return words;
+    }
+
+    private ArrayList<String> getMarkedWords(ArrayList<String> words) {
+        ArrayList<String> markedWords = new ArrayList<String>();
+        for (String word : words) {
+            if (word.charAt(0) == '/') {
+                markedWords.add(word);
+
+            }
+
+        }
+        return markedWords;
     }
 
     private void setInputtedTextInTypeChars(String typedText) {
         int length = typedText.length();
         System.out.println("Typechars:");
-        for(int i = 0; i < length; i++){
-            try{
+        for (int i = 0; i < length; i++) {
+            try {
                 this.typeChars[i].setTyped(typedText.charAt(i));
                 System.out.println(typeChars[i]);
-            } catch (NullPointerException exception){
-                if(paragraphNumber >= paragraphs.size()){
+            } catch (NullPointerException exception) {
+                if (paragraphNumber >= paragraphs.size()) {
                     System.out.println(paragraphNumber);
                     openMainWindow();
                     break;
                 }
-            }catch (IndexOutOfBoundsException exception){
+            } catch (IndexOutOfBoundsException exception) {
                 break;
             }
 
