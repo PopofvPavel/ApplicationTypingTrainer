@@ -186,6 +186,7 @@ public class TypingWindowController {
         ArrayList<String> markedWords = getMarkedWords(words);
         int correctTypedWordsAmount = getCorrectTypedWordsAmount(words);
         this.wordsTypedCorrect.setText(Integer.toString(correctTypedWordsAmount));
+        this.wordsAmount.setText(Integer.toString(words.size()));
 
         typedText = getClearedTypedTextFromSlashes(typedText);
 
@@ -207,11 +208,16 @@ public class TypingWindowController {
 
     private int getCorrectTypedWordsAmount(ArrayList<String> words) {
         String[] wordsInText = textField.getText().split(" ");
+        for (int i = 0; i < wordsInText.length; i++){
+            wordsInText[i] =  wordsInText[i].replace('«','"').replace('»','"').replace('—','-');
+        }
+
         int correctTypedWordsAmount = 0;
+
         String[] printedWords = new String[words.size()];
         int j = 0;
         for(String word: words){
-            word.replace('/', ' ');
+            word = word.replace('/', ' ');
             printedWords[j] = word.trim();
             j++;
         }
@@ -256,6 +262,7 @@ public class TypingWindowController {
         ArrayList<String> words = new ArrayList<String>();
         String[] wordsSplit = typedText.split(" ");
         for (String word : wordsSplit) {
+
             words.add(word);
         }
 
