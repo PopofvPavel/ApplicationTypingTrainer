@@ -8,6 +8,7 @@ import java.nio.file.StandardOpenOption;
 public class MarkedWordsContainer {
     public static void writeWordIntoLibrary(String word) throws IOException {
         File library = new File("Books/Harry Potter/WordLibrary/WordsLibrary.doc");
+        //File library = new File("Books/Harry Potter/pr.doc");
         word = ClearTheWord(word);
         word += '\n';
         if(!word.isEmpty()) {

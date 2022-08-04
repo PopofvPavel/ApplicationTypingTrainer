@@ -190,15 +190,17 @@ public class TypingWindowController {
 
         typedText = getClearedTypedTextFromSlashes(typedText);
 
-
         setInputtedTextInTypeChars(typedText);
         String accuracyString = processTypedCharsAccuracy(typeChars);//set field accuracyPercent
-        //accuracyStringText.setText(accuracyString);
+
+        if(!markedWords.isEmpty()){
+            for (String markedWord : markedWords) {
+                MarkedWordsContainer.writeWordIntoLibrary(markedWord);
+            }
+        }
 
 
-//        for (String markedWord : markedWords) {
-//            MarkedWordsContainer.writeWordIntoLibrary(markedWord);
-//        }
+
         System.out.println("Typed text:" + typedText);
         System.out.println("Typed words:" + words);
         System.out.println("Marked words:" + markedWords);
@@ -274,6 +276,7 @@ public class TypingWindowController {
         ArrayList<String> markedWords = new ArrayList<String>();
         for (String word : words) {
             if (word.charAt(0) == '/') {
+                word = word.replace('/',' ').trim();
                 markedWords.add(word);
 
             }
@@ -290,7 +293,7 @@ public class TypingWindowController {
                 this.typeChars[i].setTyped(typedText.charAt(i));
                 System.out.println(typeChars[i]);
             } catch (NullPointerException exception) {
-                if (paragraphNumber >= paragraphs.size()) {
+                if (paragraphNumber >= paragraphs.size()) { //if end of the file return to main screen
                     System.out.println(paragraphNumber);
                     openMainWindow();
                     break;
