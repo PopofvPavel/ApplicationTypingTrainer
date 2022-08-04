@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="1104.0" prefWidth="1801.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.TypingWindowController">
    <children>
-      <AnchorPane layoutX="-8.0" layoutY="-7.0" prefHeight="1116.0" prefWidth="1809.0" style="-fx-background-color: #2E3348;">
+      <AnchorPane layoutX="-22.0" layoutY="-21.0" prefHeight="1116.0" prefWidth="1809.0" style="-fx-background-color: #2E3348;">
          <children>
             <Text fx:id="textField" fill="WHITE" layoutX="387.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Malfoy and Crabbe weren't there yet. The crystal trophy cases glimmered where the moonlight caught them. Cups, shields, plates, and statues winked silver and gold in the darkness. They edged along the walls, keeping their eyes on the doors at either end of the room. Harry took out his wand in case Malfoy leapt in and started at once. The minutes crept by." textAlignment="JUSTIFY" wrappingWidth="1076.13671875">
                <font>
@@ -30,7 +30,7 @@
                   <Font name="Bookman Old Style" size="27.0" />
                </font>
             </TextArea>
-            <Text fx:id="paragraphNumberLabel" fill="#ff9202" layoutX="147.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="57.13671875">
+            <Text fx:id="paragraphNumberLabel" fill="#ff9202" layoutX="106.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="57.13671875">
                <font>
                   <Font size="27.0" />
                </font>
@@ -45,6 +45,16 @@
                   <Font size="27.0" />
                </font>
             </Button>
+            <Text fill="#bf7a48" layoutX="123.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Text fx:id="paragraphsAmount" fill="#0359ff" layoutX="197.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

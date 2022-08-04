@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1100.0" prefWidth="1800.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.MainWindowController">
    <children>
-      <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="67.0" layoutY="612.0" prefHeight="55.0" prefWidth="468.0" promptText="Enter a path to the file" style="-fx-border-radius: 20;" text="D:\AARadik\Java\pr\Prob\Books\Harry Potter\CHAPTERS\CHAPTER FOUR.doc">
+      <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="67.0" layoutY="612.0" prefHeight="55.0" prefWidth="468.0" promptText="Enter a path to the file" style="-fx-border-radius: 20;" text="Books/Harry Potter/CHAPTERS/CHAPTER SEVEN.doc">
          <font>
             <Font size="22.0" />
          </font>

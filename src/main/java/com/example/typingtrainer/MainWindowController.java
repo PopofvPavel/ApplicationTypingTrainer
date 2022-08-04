@@ -93,7 +93,7 @@ public class MainWindowController {
 
                 int paragraph = Integer.parseInt(paragraphNumberTextField.getText());
                 ProgramDataContainer.setParagraph(paragraph);
-                checkDateTextField.setText("Data is correct" + ProgramDataContainer.getFile().length());
+                checkDateTextField.setText("Data is correct" );
                 return true;
             } else {
                 checkDateTextField.setText("Data is incorrect");
@@ -139,6 +139,11 @@ public class MainWindowController {
                     case ALT:
                     case ESCAPE:
                         controller.getNextParagraphButton().requestFocus();
+                        try {
+                            controller.processInputtedText();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         break;
                     case CONTROL:
                         break;
