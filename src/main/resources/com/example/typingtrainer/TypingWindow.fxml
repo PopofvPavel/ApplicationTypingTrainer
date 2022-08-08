@@ -7,105 +7,110 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1104.0" prefWidth="1801.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.TypingWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1380.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.TypingWindowController">
    <children>
-      <AnchorPane layoutX="-22.0" layoutY="-26.0" prefHeight="1129.0" prefWidth="1809.0" style="-fx-background-color: #2E3348;">
+      <AnchorPane layoutX="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1380.0" style="-fx-background-color: #2E3348;">
          <children>
-            <Text fx:id="textField" fill="WHITE" layoutX="387.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Malfoy and Crabbe weren't there yet. The crystal trophy cases glimmered where the moonlight caught them. Cups, shields, plates, and statues winked silver and gold in the darkness. They edged along the walls, keeping their eyes on the doors at either end of the room. Harry took out his wand in case Malfoy leapt in and started at once. The minutes crept by." textAlignment="JUSTIFY" wrappingWidth="1076.13671875">
+            <Text fx:id="textField" fill="WHITE" layoutX="183.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Malfoy and Crabbe weren't there yet. The crystal trophy cases glimmered where the moonlight caught them. Cups, shields, plates, and statues winked silver and gold in the darkness. They edged along the walls, keeping their eyes on the doors at either end of the room. Harry took out his wand in case Malfoy leapt in and started at once. The minutes crept by." textAlignment="JUSTIFY" wrappingWidth="1128.9367065429688">
                <font>
                   <Font size="27.0" />
                </font>
             </Text>
-            <Text fill="#bf7a48" layoutX="98.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paragraph number" textAlignment="CENTER">
+            <Text fill="#bf7a48" layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paragraph number" textAlignment="CENTER">
                <font>
                   <Font size="19.0" />
                </font>
             </Text>
-            <Button fx:id="nextParagraphButton" layoutX="843.0" layoutY="735.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="120.0" text="Next" textAlignment="CENTER" textFill="#ee8b35">
+            <Button fx:id="nextParagraphButton" layoutX="15.0" layoutY="451.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="130.0" text="Next" textAlignment="CENTER" textFill="#ee8b35">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <TextArea fx:id="inputText" layoutX="387.0" layoutY="253.0" prefHeight="234.0" prefWidth="1076.0" promptText="Start typing text here">
+            <TextArea fx:id="inputText" layoutX="183.0" layoutY="417.0" prefHeight="274.0" prefWidth="1043.0" promptText="Start typing text here">
                <font>
                   <Font name="Bookman Old Style" size="27.0" />
                </font>
             </TextArea>
-            <Text fx:id="paragraphNumberLabel" fill="#ff9202" layoutX="106.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="57.13671875">
+            <Text fx:id="paragraphNumberLabel" fill="#ff9202" layoutX="27.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="57.13671875">
                <font>
                   <Font size="27.0" />
                </font>
             </Text>
-            <Button fx:id="previousParagraphButton" layoutX="387.0" layoutY="735.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="138.0" text="Prevoius" textAlignment="CENTER" textFill="#ee8b35">
+            <Button fx:id="previousParagraphButton" layoutX="15.0" layoutY="391.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="130.0" text="Prevoius" textAlignment="CENTER" textFill="#ee8b35">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="backButton" layoutX="181.0" layoutY="933.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="147.0" text="Go back">
+            <Text fill="#bf7a48" layoutX="39.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Text fx:id="paragraphsAmount" fill="#0359ff" layoutX="113.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Label layoutX="183.0" layoutY="700.0" prefHeight="36.0" prefWidth="138.0" text="AccuracyString" textAlignment="CENTER" textFill="#da7115">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Text fx:id="accuracyStringText" fill="#0ad038" layoutX="332.0" layoutY="729.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="1076.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Label layoutX="3.0" layoutY="159.0" prefHeight="36.0" prefWidth="81.0" text="Percent" textAlignment="CENTER" textFill="#da7115">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Text fx:id="accuracyPercent" fill="#07e107" layoutX="72.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="105.99999999999989">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Label layoutX="3.0" layoutY="220.0" prefHeight="36.0" prefWidth="81.0" text="WPM" textAlignment="CENTER" textFill="#da7115">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Text fx:id="WPM" fill="#05ff13" layoutX="96.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Label layoutX="5.0" layoutY="272.0" prefHeight="30.0" prefWidth="157.0" text="Words typed correct" textAlignment="CENTER" textFill="#da7115">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Text fx:id="wordsTypedCorrect" fill="#05ff13" layoutX="14.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Text fill="#bf7a48" layoutX="27.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Text fx:id="wordsAmount" fill="#05ff13" layoutX="96.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Button fx:id="backButton" layoutX="15.0" layoutY="540.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="138.0" text="Go back">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="exitButton" layoutX="18.0" layoutY="635.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="130.0" text="EXIT">
                <font>
                   <Font size="27.0" />
                </font>
             </Button>
-            <Text fill="#bf7a48" layoutX="123.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Text fx:id="paragraphsAmount" fill="#0359ff" layoutX="197.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Label layoutX="229.0" layoutY="540.0" prefHeight="36.0" prefWidth="138.0" text="AccuracyString" textAlignment="CENTER" textFill="#da7115">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Text fx:id="accuracyStringText" fill="#0ad038" layoutX="387.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="1076.13671875">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Label layoutX="258.0" layoutY="613.0" prefHeight="36.0" prefWidth="81.0" text="Percent" textAlignment="CENTER" textFill="#da7115">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Text fx:id="accuracyPercent" fill="#07e107" layoutX="379.0" layoutY="642.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Label layoutX="499.0" layoutY="613.0" prefHeight="36.0" prefWidth="81.0" text="WPM" textAlignment="CENTER" textFill="#da7115">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Text fx:id="WPM" fill="#05ff13" layoutX="580.0" layoutY="642.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Label layoutX="784.0" layoutY="613.0" prefHeight="36.0" prefWidth="202.0" text="Words typed correct" textAlignment="CENTER" textFill="#da7115">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Text fx:id="wordsTypedCorrect" fill="#05ff13" layoutX="973.0" layoutY="642.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Text fill="#bf7a48" layoutX="986.0" layoutY="642.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Text fx:id="wordsAmount" fill="#05ff13" layoutX="1071.0" layoutY="642.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="57.13671875">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
          </children>
       </AnchorPane>
    </children>

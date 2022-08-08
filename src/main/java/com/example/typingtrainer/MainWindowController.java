@@ -13,11 +13,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InvalidObjectException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class MainWindowController {
@@ -61,6 +59,14 @@ public class MainWindowController {
                 throw new RuntimeException(e);
             }
         });
+        try {
+            String paragraphNumberString = getParagraphNumberFromFile();
+            if(!(paragraphNumberString == null)){
+                this.paragraphNumberTextField.setText(paragraphNumberString);
+            }
+        } catch (IOException e) {
+            System.out.println("Problems with paragraph file");
+        }
 
 
     }
@@ -187,5 +193,16 @@ public class MainWindowController {
 
         return true;
 
+    }
+
+    private String getParagraphNumberFromFile() throws IOException {
+        File file = ProgramDataContainer.getParagraphNumberFile();
+        if (file.exists()){
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String paragraphNumber = bufferedReader.readLine();
+            return paragraphNumber;
+        }
+        return null;
     }
 }

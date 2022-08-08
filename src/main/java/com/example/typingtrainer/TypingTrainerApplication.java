@@ -11,7 +11,7 @@ public class TypingTrainerApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TypingTrainerApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1800, 1100);
+        Scene scene = new Scene(fxmlLoader.load(), 1380, 750);
         stage.setTitle("TypingTrainer");
         stage.setScene(scene);
         stage.show();

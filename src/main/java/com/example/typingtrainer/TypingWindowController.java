@@ -12,8 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -71,6 +70,9 @@ public class TypingWindowController {
     protected Button nextParagraphButton;
 
     @FXML
+    private  Button exitButton;
+
+    @FXML
     private Button previousParagraphButton;
 
     @FXML
@@ -91,11 +93,27 @@ public class TypingWindowController {
         nextParagraphButton.setOnAction(actionEvent -> onNextParagraphButtonClick());
         previousParagraphButton.setOnAction(actionEvent -> onPreviousParagraphButtonClick());
         backButton.setOnAction(actionEvent -> openMainWindow());
+        exitButton.setOnAction(actionEvent -> {
+            try {
+                onExitButtonClick();
+            } catch (IOException e) {
+                System.out.println("Problems with rewriting paragraph file");
+            }
+        });
         inputText.setWrapText(true);
         paragraphsAmount.setText(Integer.toString(paragraphs.size()));
         startNewParagraph();
         inputText.requestFocus();
 
+
+    }
+
+    private void onExitButtonClick() throws IOException {
+        File file = ProgramDataContainer.getParagraphNumberFile();
+        FileWriter fileWriter = new FileWriter(file,false);
+        fileWriter.write(Integer.toString(this.paragraphNumber));
+        fileWriter.close();
+        System.exit(0);
 
     }
 
@@ -255,7 +273,8 @@ public class TypingWindowController {
             }
         }
         double percentOfTyping = (double) correctPrinted / (double) typeChars.length * 100;
-        this.accuracyPercent.setText(Double.toString(percentOfTyping));
+        String percentOfTypingString = String.format("%.2f",percentOfTyping);
+        this.accuracyPercent.setText(percentOfTypingString);
 
         return accuracyResult.toString();
     }

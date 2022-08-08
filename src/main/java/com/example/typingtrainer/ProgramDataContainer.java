@@ -6,6 +6,16 @@ import java.io.InvalidObjectException;
 public class ProgramDataContainer {
     private static File file;
 
+    private static File paragraphNumberFile = new File("Books/LOG/ParagraphLog");
+
+    public static File getParagraphNumberFile() {
+        return paragraphNumberFile;
+    }
+
+    public static void setParagraphNumberFile(File paragraphNumberFile) {
+        ProgramDataContainer.paragraphNumberFile = paragraphNumberFile;
+    }
+
     private static int paragraph = 1;
 
     public static int getParagraph() {

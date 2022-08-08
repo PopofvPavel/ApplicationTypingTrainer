@@ -5,29 +5,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1100.0" prefWidth="1800.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1380.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.MainWindowController">
    <children>
-      <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="67.0" layoutY="612.0" prefHeight="55.0" prefWidth="468.0" promptText="Enter a path to the file" style="-fx-border-radius: 20;" text="Books/Harry Potter/CHAPTERS/CHAPTER NINE.doc">
+      <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="88.0" layoutY="443.0" prefHeight="55.0" prefWidth="468.0" promptText="Enter a path to the file" style="-fx-border-radius: 20;" text="Books/Harry Potter/CHAPTERS/CHAPTER TEN">
          <font>
             <Font size="22.0" />
          </font>
       </TextField>
-      <TextField fx:id="paragraphNumberTextField" focusTraversable="false" layoutX="67.0" layoutY="687.0" prefHeight="55.0" prefWidth="286.0" promptText="Enter a paragraph number" style="-fx-border-radius: 20;" text="1">
+      <TextField fx:id="paragraphNumberTextField" focusTraversable="false" layoutX="88.0" layoutY="518.0" prefHeight="55.0" prefWidth="286.0" promptText="Enter a paragraph number" style="-fx-border-radius: 20;" text="1">
          <font>
             <Font size="22.0" />
          </font>
       </TextField>
-      <Button fx:id="startButton" layoutX="645.0" layoutY="257.0" mnemonicParsing="false" prefHeight="98.0" prefWidth="494.0" style="-fx-border-radius: 30; -fx-background-color: #F39C63;" text="Start typing">
+      <Button fx:id="startButton" layoutX="524.0" layoutY="103.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="374.0" style="-fx-border-radius: 30; -fx-background-color: #F39C63;" text="Start typing">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <Button fx:id="checkDataButton" layoutX="67.0" layoutY="771.0" mnemonicParsing="false" onAction="#onCheckDataButtonClick" prefHeight="55.0" prefWidth="109.0" text="Check">
+      <Button fx:id="checkDataButton" layoutX="88.0" layoutY="602.0" mnemonicParsing="false" onAction="#onCheckDataButtonClick" prefHeight="55.0" prefWidth="109.0" text="Check">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="checkDateTextField" focusTraversable="false" layoutX="187.0" layoutY="771.0" prefHeight="55.0" prefWidth="347.0" promptText="Here you will see check result" style="-fx-border-radius: 20;">
+      <TextField fx:id="checkDateTextField" focusTraversable="false" layoutX="208.0" layoutY="602.0" prefHeight="55.0" prefWidth="347.0" promptText="Here you will see check result" style="-fx-border-radius: 20;">
          <font>
             <Font size="22.0" />
          </font>
