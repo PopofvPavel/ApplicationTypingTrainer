@@ -153,8 +153,17 @@ public class MainWindowController {
                         break;
                     case CONTROL:
                         break;
+                    case F10:
+                        try {
+                            controller.exitProgram();
+                        } catch (IOException e) {
+                            System.out.println("problems with exit");
+                        }
+                        break;
                     default:
                         controller.getInputText().requestFocus();
+                        long startTIme = System.currentTimeMillis();
+                        controller.setStartTime(startTIme);
                         break;
 
 

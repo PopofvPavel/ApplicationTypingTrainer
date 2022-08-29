@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -45,6 +46,16 @@ public class TypingWindowController {
     TypeChar[] typeChars;
     private ArrayList<String> paragraphs = text.getParagraphs();
 
+    long startTime;
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
     @FXML
     private ResourceBundle resources;
 
@@ -70,7 +81,7 @@ public class TypingWindowController {
     protected Button nextParagraphButton;
 
     @FXML
-    private  Button exitButton;
+    private Button exitButton;
 
     @FXML
     private Button previousParagraphButton;
@@ -86,6 +97,16 @@ public class TypingWindowController {
 
     @FXML
     private TextArea inputText;
+
+
+    @FXML
+    private Label wordsTypedCorrectLabel;
+    @FXML
+    private Label percentLabel;
+    @FXML
+    private Text ofLabel;
+    @FXML
+    private Label WPMLabel;
 
 
     @FXML
@@ -109,12 +130,16 @@ public class TypingWindowController {
     }
 
     private void onExitButtonClick() throws IOException {
+        exitProgram();
+
+    }
+
+    protected void exitProgram() throws IOException {
         File file = ProgramDataContainer.getParagraphNumberFile();
-        FileWriter fileWriter = new FileWriter(file,false);
+        FileWriter fileWriter = new FileWriter(file, false);
         fileWriter.write(Integer.toString(this.paragraphNumber));
         fileWriter.close();
         System.exit(0);
-
     }
 
     private void onPreviousParagraphButtonClick() {
@@ -144,10 +169,13 @@ public class TypingWindowController {
 
     @FXML
     private void startNewParagraph() throws IndexOutOfBoundsException {
+
         this.typeChars = null;
         int paragraphNumber = getParagraphNumber();
         String paragraph = this.paragraphs.get(paragraphNumber);
         int paragraphLength = paragraph.length();
+
+        setVisibleInfoLabels(false);
 
         this.typeChars = new TypeChar[paragraphLength];
         paragraphNumberLabel.setText(Integer.toString(paragraphNumber + 1));
@@ -161,6 +189,18 @@ public class TypingWindowController {
         }
 
 
+    }
+
+    private void setVisibleInfoLabels(boolean isVisible) {
+        this.WPMLabel.setVisible(isVisible);
+        this.wordsTypedCorrectLabel.setVisible(isVisible);
+        this.ofLabel.setVisible(isVisible);
+        this.percentLabel.setVisible(isVisible);
+
+        this.accuracyPercent.setVisible(isVisible);
+        this.WPM.setVisible(isVisible);
+        this.wordsTypedCorrect.setVisible(isVisible);
+        this.wordsAmount.setVisible(isVisible);
     }
 
     public TextArea getInputText() {
@@ -199,6 +239,8 @@ public class TypingWindowController {
     public void processInputtedText() throws IOException {
         System.out.println(this.paragraphs.get(this.paragraphNumber - 1));
 
+        setVisibleInfoLabels(true);
+
         String typedText = inputText.getText();
         ArrayList<String> words = getInputTextWords(typedText);
         ArrayList<String> markedWords = getMarkedWords(words);
@@ -211,39 +253,44 @@ public class TypingWindowController {
         setInputtedTextInTypeChars(typedText);
         String accuracyString = processTypedCharsAccuracy(typeChars);//set field accuracyPercent
 
-        if(!markedWords.isEmpty()){
+        if (!markedWords.isEmpty()) {
             for (String markedWord : markedWords) {
                 MarkedWordsContainer.writeWordIntoLibrary(markedWord);
             }
         }
 
-
+        long endTime = System.currentTimeMillis();
+        double WPM = (double)this.typeChars.length / 5.0 / (((double)endTime - (double)this.getStartTime()) / 1000.0 / 60.0 );
+        String WPMString =  String.format("%.1f", WPM);
+        this.WPM.setText(WPMString);
 
         System.out.println("Typed text:" + typedText);
         System.out.println("Typed words:" + words);
         System.out.println("Marked words:" + markedWords);
+        System.out.println("Typechars len:" + (double)this.typeChars.length + "\nlen/5 = " + (double)this.typeChars.length / 5
+        + " sec " + (((double)endTime - (double)this.getStartTime()) / 1000.0) + " WPM = " + WPM);
 
 
     }
 
     private int getCorrectTypedWordsAmount(ArrayList<String> words) {
         String[] wordsInText = textField.getText().split(" ");
-        for (int i = 0; i < wordsInText.length; i++){
-            wordsInText[i] =  wordsInText[i].replace('«','"').replace('»','"').replace('—','-');
+        for (int i = 0; i < wordsInText.length; i++) {
+            wordsInText[i] = wordsInText[i].replace('«', '"').replace('»', '"').replace('—', '-');
         }
 
         int correctTypedWordsAmount = 0;
 
         String[] printedWords = new String[words.size()];
         int j = 0;
-        for(String word: words){
+        for (String word : words) {
             word = word.replace('/', ' ');
             printedWords[j] = word.trim();
             j++;
         }
 
-        for(int i = 0; i < words.size(); i++){
-            if(printedWords[i].equals(wordsInText[i])){
+        for (int i = 0; i < words.size(); i++) {
+            if (printedWords[i].equals(wordsInText[i])) {
                 correctTypedWordsAmount++;
             }
         }
@@ -273,7 +320,7 @@ public class TypingWindowController {
             }
         }
         double percentOfTyping = (double) correctPrinted / (double) typeChars.length * 100;
-        String percentOfTypingString = String.format("%.2f",percentOfTyping);
+        String percentOfTypingString = String.format("%.2f", percentOfTyping);
         this.accuracyPercent.setText(percentOfTypingString);
 
         return accuracyResult.toString();
@@ -295,7 +342,7 @@ public class TypingWindowController {
         ArrayList<String> markedWords = new ArrayList<String>();
         for (String word : words) {
             if (word.charAt(0) == '/') {
-                word = word.replace('/',' ').trim();
+                word = word.replace('/', ' ').trim();
                 markedWords.add(word);
 
             }

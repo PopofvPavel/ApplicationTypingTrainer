@@ -61,7 +61,7 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Label layoutX="3.0" layoutY="159.0" prefHeight="36.0" prefWidth="81.0" text="Percent" textAlignment="CENTER" textFill="#da7115">
+            <Label fx:id="percentLabel" layoutX="3.0" layoutY="159.0" prefHeight="36.0" prefWidth="81.0" text="Percent" textAlignment="CENTER" textFill="#da7115">
                <font>
                   <Font size="20.0" />
                </font>
@@ -71,7 +71,7 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Label layoutX="3.0" layoutY="220.0" prefHeight="36.0" prefWidth="81.0" text="WPM" textAlignment="CENTER" textFill="#da7115">
+            <Label fx:id="WPMLabel" layoutX="3.0" layoutY="220.0" prefHeight="36.0" prefWidth="81.0" text="WPM" textAlignment="CENTER" textFill="#da7115">
                <font>
                   <Font size="20.0" />
                </font>
@@ -81,7 +81,7 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Label layoutX="5.0" layoutY="272.0" prefHeight="30.0" prefWidth="157.0" text="Words typed correct" textAlignment="CENTER" textFill="#da7115">
+            <Label fx:id="wordsTypedCorrectLabel" layoutX="5.0" layoutY="272.0" prefHeight="30.0" prefWidth="157.0" text="Words typed correct" textAlignment="CENTER" textFill="#da7115">
                <font>
                   <Font size="20.0" />
                </font>
@@ -91,7 +91,7 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Text fill="#bf7a48" layoutX="27.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
+            <Text fx:id="ofLabel" fill="#bf7a48" layoutX="27.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="of" textAlignment="CENTER" wrappingWidth="106.0">
                <font>
                   <Font size="27.0" />
                </font>
