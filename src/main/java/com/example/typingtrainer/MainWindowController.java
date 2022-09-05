@@ -1,9 +1,11 @@
 package com.example.typingtrainer;
 ///com.example.typingtrainer.MainWindowController
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,11 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class MainWindowController {
@@ -37,6 +39,9 @@ public class MainWindowController {
     private Button checkDataButton;
 
     @FXML
+    private Button fileChooserButton;
+
+    @FXML
     private TextField checkDateTextField;
 
     @FXML
@@ -52,6 +57,7 @@ public class MainWindowController {
     void initialize() {
         startButton.requestFocus();
         checkDataButton.setOnAction(actionEvent -> onCheckDataButtonClick());
+        //fileChooserButton.setOnAction(actionEvent -> chooseNewBookInFileManager());
         startButton.setOnAction(actionEvent -> {
             try {
                 onStartButtonClick();
@@ -61,13 +67,33 @@ public class MainWindowController {
         });
         try {
             String paragraphNumberString = getParagraphNumberFromFile();
-            if(!(paragraphNumberString == null)){
+            if (!(paragraphNumberString == null)) {
                 this.paragraphNumberTextField.setText(paragraphNumberString);
             }
         } catch (IOException e) {
             System.out.println("Problems with paragraph file");
         }
 
+
+    }
+
+    @FXML
+    private void chooseNewBookInFileManager(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        FileChooser fileChooser = new FileChooser();
+        File book = fileChooser.showOpenDialog(stage);
+        if (book.isFile()){
+            try {
+                ProgramDataContainer.setFile(book);
+                System.out.println(ProgramDataContainer.getFile().getAbsolutePath());
+                this.pathToFileTextField.setText(book.getAbsolutePath());
+                paragraphNumberTextField.setText("1");
+                startButton.requestFocus();
+            } catch (InvalidObjectException e) {
+                System.err.println("Exception in file chooser");
+            }
+        }
 
     }
 
@@ -99,7 +125,7 @@ public class MainWindowController {
 
                 int paragraph = Integer.parseInt(paragraphNumberTextField.getText());
                 ProgramDataContainer.setParagraph(paragraph);
-                checkDateTextField.setText("Data is correct" );
+                checkDateTextField.setText("Data is correct");
                 return true;
             } else {
                 checkDateTextField.setText("Data is incorrect");
@@ -206,7 +232,7 @@ public class MainWindowController {
 
     private String getParagraphNumberFromFile() throws IOException {
         File file = ProgramDataContainer.getParagraphNumberFile();
-        if (file.exists()){
+        if (file.exists()) {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String paragraphNumber = bufferedReader.readLine();

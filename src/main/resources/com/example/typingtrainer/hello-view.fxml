@@ -32,5 +32,10 @@
             <Font size="22.0" />
          </font>
       </TextField>
+      <Button fx:id="fileChooserButton" layoutX="83.0" layoutY="360.0" mnemonicParsing="false" onAction="#chooseNewBookInFileManager" prefHeight="55.0" prefWidth="206.0" text="Choose file">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
