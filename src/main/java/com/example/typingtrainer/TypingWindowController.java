@@ -16,12 +16,15 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class TypingWindowController {
     boolean isFinished = false;
     private int paragraphNumber = ProgramDataContainer.getParagraph() - 1;
 
+    private String path = ProgramDataContainer.getPath();
 
     public int getParagraphNumber() {
         return paragraphNumber;
@@ -139,6 +142,40 @@ public class TypingWindowController {
         FileWriter fileWriter = new FileWriter(file, false);
         fileWriter.write(Integer.toString(this.paragraphNumber));
         fileWriter.close();
+
+        //test
+        File everyBookParagraphNumberFile = ProgramDataContainer.getEveryBookParagraphNumberFile();
+        Map<String, Integer>  booksMap= new HashMap();
+        if (everyBookParagraphNumberFile.exists()) {
+            FileReader fileReader = new FileReader(everyBookParagraphNumberFile);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            //String line = null;
+            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()){
+                if (line != null){
+                    String bookPath = line;
+                    line = bufferedReader.readLine();
+                    int paragraphNumber = Integer.parseInt(line);
+                    booksMap.put(bookPath, paragraphNumber);
+
+                }
+
+            }
+        }
+        booksMap.put(path, this.paragraphNumber);
+
+        FileWriter fileWriter2 = new FileWriter(everyBookParagraphNumberFile, false);
+        for(Map.Entry<String, Integer> entry : booksMap.entrySet()){
+            fileWriter2.write(entry.getKey());
+            fileWriter2.write("\n");
+            fileWriter2.write(entry.getValue().toString());
+            fileWriter2.write("\n");
+
+        }
+
+        fileWriter2.close();
+
+        // end of test
         System.exit(0);
     }
 

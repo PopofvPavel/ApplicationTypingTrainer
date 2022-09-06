@@ -7,11 +7,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1380.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.TypingWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.TypingWindowController">
    <children>
-      <AnchorPane layoutX="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1380.0" style="-fx-background-color: #2E3348;">
+      <AnchorPane layoutX="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: #2E3348;">
          <children>
-            <Text fx:id="textField" fill="WHITE" layoutX="183.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Malfoy and Crabbe weren't there yet. The crystal trophy cases glimmered where the moonlight caught them. Cups, shields, plates, and statues winked silver and gold in the darkness. They edged along the walls, keeping their eyes on the doors at either end of the room. Harry took out his wand in case Malfoy leapt in and started at once. The minutes crept by." textAlignment="JUSTIFY" wrappingWidth="1128.9367065429688">
+            <Text fx:id="textField" fill="WHITE" layoutX="183.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Malfoy and Crabbe weren't there yet. The crystal trophy cases glimmered where the moonlight caught them. Cups, shields, plates, and statues winked silver and gold in the darkness. They edged along the walls, keeping their eyes on the doors at either end of the room. Harry took out his wand in case Malfoy leapt in and started at once. The minutes crept by." textAlignment="JUSTIFY" wrappingWidth="1373.9367065429688">
                <font>
                   <Font size="27.0" />
                </font>
@@ -26,7 +26,7 @@
                   <Font size="24.0" />
                </font>
             </Button>
-            <TextArea fx:id="inputText" layoutX="183.0" layoutY="417.0" prefHeight="274.0" prefWidth="1043.0" promptText="Start typing text here">
+            <TextArea fx:id="inputText" layoutX="183.0" layoutY="555.0" prefHeight="274.0" prefWidth="1374.0" promptText="Start typing text here">
                <font>
                   <Font name="Bookman Old Style" size="27.0" />
                </font>
@@ -51,7 +51,7 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Label layoutX="183.0" layoutY="700.0" prefHeight="36.0" prefWidth="138.0" text="AccuracyString" textAlignment="CENTER" textFill="#da7115">
+            <Label layoutX="11.0" layoutY="850.0" prefHeight="36.0" prefWidth="138.0" text="AccuracyString" textAlignment="CENTER" textFill="#da7115">
                <font>
                   <Font size="20.0" />
                </font>

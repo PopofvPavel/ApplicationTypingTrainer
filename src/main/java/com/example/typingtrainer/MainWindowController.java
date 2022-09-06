@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainWindowController {
@@ -47,6 +49,7 @@ public class MainWindowController {
     @FXML
     private TextField paragraphNumberTextField;
 
+
     @FXML
     private TextField pathToFileTextField;
 
@@ -66,12 +69,18 @@ public class MainWindowController {
             }
         });
         try {
-            String paragraphNumberString = getParagraphNumberFromFile();
+            //String paragraphNumberString = getParagraphNumberFromFile();
+            String path = pathToFileTextField.getText();
+            String paragraphNumberString =  getParagraphNumberForCurrentBook(path);
             if (!(paragraphNumberString == null)) {
                 this.paragraphNumberTextField.setText(paragraphNumberString);
+                ProgramDataContainer.setPath(this.paragraphNumberTextField.getText());
+
             }
         } catch (IOException e) {
             System.out.println("Problems with paragraph file");
+        } catch (NullPointerException e){
+            System.err.println("nullpoint");
         }
 
 
@@ -83,15 +92,36 @@ public class MainWindowController {
 
         FileChooser fileChooser = new FileChooser();
         File book = fileChooser.showOpenDialog(stage);
-        if (book.isFile()){
+
+
+
+        if (book != null && book.isFile()){
             try {
                 ProgramDataContainer.setFile(book);
                 System.out.println(ProgramDataContainer.getFile().getAbsolutePath());
                 this.pathToFileTextField.setText(book.getAbsolutePath());
                 paragraphNumberTextField.setText("1");
+                ProgramDataContainer.setPath(this.paragraphNumberTextField.getText());
+
+                String path = pathToFileTextField.getText();
+                String paragraphNumberString = null;
+                try{
+                     paragraphNumberString =  getParagraphNumberForCurrentBook(path);
+                } catch (NullPointerException exception){
+                    paragraphNumberString = "1";
+                }
+
+                if (!(paragraphNumberString == null)) {
+                    this.paragraphNumberTextField.setText(paragraphNumberString);
+                    ProgramDataContainer.setPath(this.paragraphNumberTextField.getText());//?? why setpath
+
+                }
+
                 startButton.requestFocus();
             } catch (InvalidObjectException e) {
                 System.err.println("Exception in file chooser");
+            } catch (IOException e) {
+                System.err.println("Exception in getting from current book");
             }
         }
 
@@ -100,6 +130,7 @@ public class MainWindowController {
     @FXML
     private void onStartButtonClick() throws IOException {
         if (checkData()) {
+            ProgramDataContainer.setPath(this.pathToFileTextField.getText());//maybe not working
             openTypingWindow();
         }
         //checkData();
@@ -109,7 +140,12 @@ public class MainWindowController {
     @FXML
     protected void onCheckDataButtonClick() {
         checkData();
-
+        String path = pathToFileTextField.getText();
+        try {
+            System.out.println("PARAGRAPH FOR CURRENT BOOK" + getParagraphNumberForCurrentBook(path));
+        } catch (IOException e) {
+            System.err.println("Problems in check data getting paragraphs");
+        }
     }
 
     private boolean checkData() {
@@ -240,4 +276,29 @@ public class MainWindowController {
         }
         return null;
     }
+    private String getParagraphNumberForCurrentBook(String path) throws IOException {
+        File file = ProgramDataContainer.getEveryBookParagraphNumberFile();
+        Map<String, Integer>  booksMap= new HashMap();
+
+        if (file.exists()) {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null){
+                String bookPath = line;
+                line = bufferedReader.readLine();
+                int paragraphNumber = Integer.parseInt(line);
+                booksMap.put(bookPath, paragraphNumber);
+
+            }
+
+        }
+        Integer paragraph = 1;
+        paragraph = booksMap.get(path);
+
+        return Integer.toString(paragraph);
+    }
+
+
 }

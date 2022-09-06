@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="TypingTrainer">
+    <output-path>$PROJECT_DIR$/out/artifacts/TypingTrainer</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.example.typingtrainer.TypingTrainerApplication" />
+        <option name="description" value="" />
+        <option name="height" value="750" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="TypingTrainer" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+        <option name="width" value="1380" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="TypingTrainer.jar">
+        <element id="module-output" name="TypingTrainer" />
+      </element>
+    </root>
+  </artifact>
+</component>

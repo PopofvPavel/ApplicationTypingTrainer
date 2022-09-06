@@ -6,7 +6,23 @@ import java.io.InvalidObjectException;
 public class ProgramDataContainer {
     private static File file;
 
+    private static String path;
+
+    public static void setPath(String path) {
+        ProgramDataContainer.path = path;
+    }
+
     private static File paragraphNumberFile = new File("Books/LOG/ParagraphLog");
+
+    public static File getEveryBookParagraphNumberFile() {
+        return everyBookParagraphNumberFile;
+    }
+
+    public static void setEveryBookParagraphNumberFile(File everyBookParagraphNumberFile) {
+        ProgramDataContainer.everyBookParagraphNumberFile = everyBookParagraphNumberFile;
+    }
+
+    private static File everyBookParagraphNumberFile = new File("Books/LOG/BooksParagraphs");
 
     public static File getParagraphNumberFile() {
         return paragraphNumberFile;
@@ -26,7 +42,7 @@ public class ProgramDataContainer {
         ProgramDataContainer.paragraph = paragraph;
     }
 
-    public static  File getFile() {
+    public static File getFile() {
         return file;
     }
 
@@ -36,5 +52,9 @@ public class ProgramDataContainer {
         } else {
             throw new InvalidObjectException("This file is unreadable or does not exixts");
         }
+    }
+
+    public static String getPath() {
+        return path;
     }
 }
