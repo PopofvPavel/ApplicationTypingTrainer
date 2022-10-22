@@ -1,6 +1,7 @@
 package com.example.typingtrainer;
 ///com.example.typingtrainer.MainWindowController
 
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,6 +26,8 @@ import java.util.ResourceBundle;
 public class MainWindowController {
     @FXML
     private Label welcomeText;
+    @FXML
+    private Button typeCharButton;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -68,10 +71,17 @@ public class MainWindowController {
                 throw new RuntimeException(e);
             }
         });
+        typeCharButton.setOnAction(actionEvent -> {
+            try {
+                onOpenTypeCharsWindowCilck();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         try {
             //String paragraphNumberString = getParagraphNumberFromFile();
             String path = pathToFileTextField.getText();
-            String paragraphNumberString =  getParagraphNumberForCurrentBook(path);
+            String paragraphNumberString = getParagraphNumberForCurrentBook(path);
             if (!(paragraphNumberString == null)) {
                 this.paragraphNumberTextField.setText(paragraphNumberString);
                 ProgramDataContainer.setPath(this.paragraphNumberTextField.getText());
@@ -79,12 +89,13 @@ public class MainWindowController {
             }
         } catch (IOException e) {
             System.out.println("Problems with paragraph file");
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.err.println("nullpoint");
         }
 
 
     }
+
 
     @FXML
     private void chooseNewBookInFileManager(ActionEvent event) {
@@ -94,8 +105,7 @@ public class MainWindowController {
         File book = fileChooser.showOpenDialog(stage);
 
 
-
-        if (book != null && book.isFile()){
+        if (book != null && book.isFile()) {
             try {
                 ProgramDataContainer.setFile(book);
                 System.out.println(ProgramDataContainer.getFile().getAbsolutePath());
@@ -105,9 +115,9 @@ public class MainWindowController {
 
                 String path = pathToFileTextField.getText();
                 String paragraphNumberString = null;
-                try{
-                     paragraphNumberString =  getParagraphNumberForCurrentBook(path);
-                } catch (NullPointerException exception){
+                try {
+                    paragraphNumberString = getParagraphNumberForCurrentBook(path);
+                } catch (NullPointerException exception) {
                     paragraphNumberString = "1";
                 }
 
@@ -180,6 +190,84 @@ public class MainWindowController {
             checkDateTextField.setText(exception.getMessage());
         }
         return false;
+    }
+
+    private void onOpenTypeCharsWindowCilck() throws IOException {
+        if (checkData()) {
+            ProgramDataContainer.setPath(this.pathToFileTextField.getText());//maybe not working
+            openTypeCharsWindow();
+        }
+
+    }
+
+    private void openTypeCharsWindow() throws IOException {
+
+        typeCharButton.getScene().getWindow().hide();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("TypeCharsWindow.fxml"));
+
+        loader.load();
+        TypeCharsWindowController controller = loader.getController();
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.requestFocus();
+        root.requestFocus();//need to not focus SPACE on button
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                KeyCode code = keyEvent.getCode();
+                System.out.println("You pressed key:" + code);
+                switch (code) {
+                    case ALT:
+                    case ESCAPE:
+                        controller.getNextParagraphButton().requestFocus();
+//                        try {
+//                            controller.processInputtedText();
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+                        break;
+                    case CONTROL:
+                    case SHIFT:
+                        break;
+                    case F10:
+//                        try {
+//                            controller.exitProgram();
+//                        } catch (IOException e) {
+//                            System.out.println("problems with exit");
+//                        }
+                        break;
+                    case BACK_SPACE:
+                        int ptr = controller.getPointer();
+                        controller.setPointer(--ptr);
+                        controller.clearLabel(controller.getPointer());
+                        controller.highlightCurrentPosition(controller.getPointer());
+
+                        break;
+
+                    default:
+
+                        int pointer = controller.getPointer();
+                        controller.processKeyPut(code, pointer);
+
+                        controller.setPointer(++pointer);
+                        controller.highlightCurrentPosition(controller.getPointer());
+//                        long startTIme = System.currentTimeMillis();
+//                        controller.setStartTime(startTIme);
+                        break;
+
+
+                }
+            }
+        });
+
+        stage.showAndWait();
     }
 
     private void openTypingWindow() throws IOException {
@@ -276,16 +364,17 @@ public class MainWindowController {
         }
         return null;
     }
+
     private String getParagraphNumberForCurrentBook(String path) throws IOException {
         File file = ProgramDataContainer.getEveryBookParagraphNumberFile();
-        Map<String, Integer>  booksMap= new HashMap();
+        Map<String, Integer> booksMap = new HashMap();
 
         if (file.exists()) {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String line = null;
-            while ((line = bufferedReader.readLine()) != null){
+            while ((line = bufferedReader.readLine()) != null) {
                 String bookPath = line;
                 line = bufferedReader.readLine();
                 int paragraphNumber = Integer.parseInt(line);

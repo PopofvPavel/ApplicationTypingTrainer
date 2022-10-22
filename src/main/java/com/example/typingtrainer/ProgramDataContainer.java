@@ -5,14 +5,12 @@ import java.io.InvalidObjectException;
 
 public class ProgramDataContainer {
     private static File file;
-
-    private static String path;
-
-    public static void setPath(String path) {
-        ProgramDataContainer.path = path;
-    }
-
+    private static File everyBookParagraphNumberFile = new File("Books/LOG/BooksParagraphs");
     private static File paragraphNumberFile = new File("Books/LOG/ParagraphLog");
+    private static String path;
+    private static int paragraph = 1;
+
+
 
     public static File getEveryBookParagraphNumberFile() {
         return everyBookParagraphNumberFile;
@@ -21,31 +19,21 @@ public class ProgramDataContainer {
     public static void setEveryBookParagraphNumberFile(File everyBookParagraphNumberFile) {
         ProgramDataContainer.everyBookParagraphNumberFile = everyBookParagraphNumberFile;
     }
-
-    private static File everyBookParagraphNumberFile = new File("Books/LOG/BooksParagraphs");
-
     public static File getParagraphNumberFile() {
         return paragraphNumberFile;
     }
-
     public static void setParagraphNumberFile(File paragraphNumberFile) {
         ProgramDataContainer.paragraphNumberFile = paragraphNumberFile;
     }
-
-    private static int paragraph = 1;
-
     public static int getParagraph() {
         return paragraph;
     }
-
     public static void setParagraph(int paragraph) {
         ProgramDataContainer.paragraph = paragraph;
     }
-
     public static File getFile() {
         return file;
     }
-
     public static void setFile(File file) throws InvalidObjectException {
         if ((file != null) && (file.canRead())) {
             ProgramDataContainer.file = file;
@@ -53,8 +41,10 @@ public class ProgramDataContainer {
             throw new InvalidObjectException("This file is unreadable or does not exixts");
         }
     }
-
     public static String getPath() {
         return path;
+    }
+    public static void setPath(String path) {
+        ProgramDataContainer.path = path;
     }
 }
