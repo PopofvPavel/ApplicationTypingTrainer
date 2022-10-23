@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -151,7 +150,7 @@ public class TypeCharsWindowController {
     }
 
     public void processKeyPut(KeyCode code, int pointer) {
-        char ch = code.getChar().charAt(0);
+        char ch = getCh(code, pointer);
         this.typeChars[pointer].setTyped(ch);//????
         System.out.println("POS: " + pointer + "Is correct: " + this.typeChars[pointer].isTypedCorrect() + " Correct: " + this.typeChars[pointer].getCorrect() + " Typed: " + this.typeChars[pointer].getTyped());
         System.out.println(ch);
@@ -167,6 +166,27 @@ public class TypeCharsWindowController {
         } else {
             label.setStyle("-fx-background-color: #E32636;");
         }
+    }
+
+    private char getCh(KeyCode code, int pointer) {
+        if (code.equals(KeyCode.QUOTE)) {
+            if ((this.typeChars[pointer].getCorrect() == '«') || (this.typeChars[pointer].getCorrect() == '»')) {
+                return '"';
+            } else {
+                return '\'';
+            }
+        }
+        if (code.equals(KeyCode.SLASH)){
+            if(this.typeChars[pointer].getCorrect() == '?'){
+                return '?';
+            }
+        }
+        if (code.equals(KeyCode.DIGIT1){
+            if(this.typeChars[pointer].getCorrect() == '!'){
+                return '!';
+            }
+        }
+        return code.getChar().charAt(0);
     }
 
     private Label getCurrentLabel(int pointer) {
@@ -257,18 +277,19 @@ public class TypeCharsWindowController {
     public void clearLabel(int pointer) {
         Label label = getCurrentLabel(pointer);
         Label defaultLabel = new Label("10");
-        var background =defaultLabel.getBackground();
+        var background = defaultLabel.getBackground();
         label.setBackground(background);
 
     }
-    public void highlightCurrentPosition(int pointer){
+
+    public void highlightCurrentPosition(int pointer) {
         Label label = getCurrentLabel(pointer);
         label.setStyle("-fx-background-color: #006EFF;");
 
         Label defaultLabel = new Label("10");
         defaultLabel.setStyle("-fx-background-color: #006EFF;");
         var background = defaultLabel.getBackground();
-        label.setBackground(new Background(new BackgroundFill(Color.rgb(0,110,255),null,null)));
+        label.setBackground(new Background(new BackgroundFill(Color.rgb(0, 110, 255), null, null)));
 
         int nextpointer = this.getPointer() + 1;
         clearLabel(nextpointer);
