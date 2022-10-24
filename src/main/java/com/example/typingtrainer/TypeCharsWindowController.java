@@ -1,6 +1,9 @@
 package com.example.typingtrainer;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -8,23 +11,26 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
 public class TypeCharsWindowController {
     private static final double FONT_SIZE = 24;
     private static final int TYPECHARS_ROWS = 19;
-    private static final int LABELS_IN_ROW = 120;
+    private static final int LABELS_IN_ROW = 110;
     private int pointer = 0;
 
     public int getPointer() {
         return pointer;
     }
-
+    private String path = ProgramDataContainer.getPath();
     public void setPointer(int i) {
         this.pointer = i;
     }
@@ -95,7 +101,134 @@ public class TypeCharsWindowController {
     @FXML
     void initialize() {
         putComponents();
+        nextParagraphButton.setOnAction(actionEvent -> onNextParagraphButtonClick());
+        previousParagraphButton.setOnAction(actionEvent -> onPreviousParagraphButtonClick());
+        backButton.setOnAction(actionEvent -> openMainWindow());
+        exitButton.setOnAction(actionEvent -> {
+            try {
+                onExitButtonClick();
+            } catch (IOException e) {
+                System.out.println("Problems with rewriting paragraph file");
+            }
+        });
+        paragraphsAmount.setText(Integer.toString(paragraphs.size()));
         startNewParagraph();
+    }
+
+    private void onExitButtonClick() throws IOException {
+        exitProgram();
+    }
+
+    protected void exitProgram() throws IOException {
+        saveParagraphNumber();
+        updateEveryBookParagraphNumberFile();
+
+        System.exit(0);
+    }
+
+    private void updateEveryBookParagraphNumberFile() throws IOException {
+        File everyBookParagraphNumberFile = ProgramDataContainer.getEveryBookParagraphNumberFile();
+        Map<String, Integer> booksMap= new HashMap();
+        fillBooksMapWithExistingFIles(everyBookParagraphNumberFile, booksMap);
+        booksMap.put(path, this.paragraphNumber);
+        rewriteEveryBookParagraphNumberFile(everyBookParagraphNumberFile, booksMap);
+
+    }
+
+    private void rewriteEveryBookParagraphNumberFile(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
+        FileWriter fileWriter2 = new FileWriter(everyBookParagraphNumberFile, false);
+        for(Map.Entry<String, Integer> entry : booksMap.entrySet()){
+            fileWriter2.write(entry.getKey());
+            fileWriter2.write("\n");
+            fileWriter2.write(entry.getValue().toString());
+            fileWriter2.write("\n");
+
+        }
+        fileWriter2.close();
+    }
+
+    private void fillBooksMapWithExistingFIles(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
+        if (everyBookParagraphNumberFile.exists()) {
+            FileReader fileReader = new FileReader(everyBookParagraphNumberFile);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            //String line = null;
+            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()){
+                if (line != null){
+                    String bookPath = line;
+                    line = bufferedReader.readLine();
+                    int paragraphNumber = Integer.parseInt(line);
+                    booksMap.put(bookPath, paragraphNumber);
+
+                }
+
+            }
+        }
+    }
+
+    private void saveParagraphNumber() throws IOException {
+        File file = ProgramDataContainer.getParagraphNumberFile();
+        FileWriter fileWriter = new FileWriter(file, false);
+        fileWriter.write(Integer.toString(this.paragraphNumber));
+        fileWriter.close();
+    }
+
+    private void openMainWindow() {
+        backButton.getScene().getWindow().hide();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("hello-view.fxml"));
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+
+        stage.show();
+    }
+
+    private void onPreviousParagraphButtonClick() {
+        setParagraphNumber(--paragraphNumber);
+        setParagraphNumber(--paragraphNumber);
+        try {
+            startNewParagraph();
+            getFocusOnTypeChars();
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Out of borders");
+            setParagraphNumber(++paragraphNumber);
+            setParagraphNumber(++paragraphNumber);
+        } catch (IOException e) {
+            System.err.println("Problems with focusing on typing labels");
+        }
+    }
+
+    private void onNextParagraphButtonClick() {
+        if (paragraphNumber == paragraphs.size()) {
+            System.out.println("YOU HAVE SUCCESSFULLY FINISHED THIS CHAPTER");
+        }
+        try {
+            startNewParagraph();
+            getFocusOnTypeChars();
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Out of borders");
+        } catch (IOException e) {
+            System.err.println("Problems with focusing on typing labels");
+        }
+    }
+
+    private void getFocusOnTypeChars() throws IOException {
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getClass().getResource("TypeCharsWindow.fxml"));
+//        loader.load();
+//        Parent root = loader.getRoot();
+//        root.requestFocus();
+        this.vbox.requestFocus();
     }
 
     private void putComponents() {//need 19 hboxes
@@ -181,9 +314,17 @@ public class TypeCharsWindowController {
                 return '?';
             }
         }
-        if (code.equals(KeyCode.DIGIT1){
+        if (code.equals(KeyCode.DIGIT1)){
             if(this.typeChars[pointer].getCorrect() == '!'){
                 return '!';
+            }
+        }if (code.equals(KeyCode.DIGIT9)){
+            if(this.typeChars[pointer].getCorrect() == '('){
+                return '(';
+            }
+        }if (code.equals(KeyCode.DIGIT0)){
+            if(this.typeChars[pointer].getCorrect() == ')'){
+                return ')';
             }
         }
         return code.getChar().charAt(0);
@@ -205,6 +346,10 @@ public class TypeCharsWindowController {
 
     @FXML
     private void startNewParagraph() throws IndexOutOfBoundsException {
+        resetParagraph();
+        setVisibleInfoLabels(false);
+        putComponents();
+        paragraphNumberLabel.setText(Integer.toString(paragraphNumber + 1));
         this.highlightCurrentPosition(this.getPointer());
         this.typeChars = null;
         int paragraphNumber = getParagraphNumber();
@@ -239,6 +384,24 @@ public class TypeCharsWindowController {
             System.out.println("end of file" + paragraphs.size());
         }
 
+    }
+
+    private void setVisibleInfoLabels(boolean isVisible) {//add commented labels
+        this.WPMLabel.setVisible(isVisible);
+        //this.wordsTypedCorrectLabel.setVisible(isVisible);
+        this.ofLabel.setVisible(isVisible);
+        this.percentLabel.setVisible(isVisible);
+
+        this.accuracyPercent.setVisible(isVisible);
+        this.WPM.setVisible(isVisible);
+        //this.wordsTypedCorrect.setVisible(isVisible);
+        //this.wordsAmount.setVisible(isVisible);
+    }
+
+    private void resetParagraph() {
+        this. vbox.getChildren().clear();
+        this.pointer = 0;
+        this.typeChars = null;
     }
 
 
@@ -284,16 +447,20 @@ public class TypeCharsWindowController {
 
     public void highlightCurrentPosition(int pointer) {
         Label label = getCurrentLabel(pointer);
-        label.setStyle("-fx-background-color: #006EFF;");
-
+        //label.setStyle("-fx-background-color: #006EFF;");
+        label.setStyle("-fx-background-color: #7FFFD4;");
         Label defaultLabel = new Label("10");
         defaultLabel.setStyle("-fx-background-color: #006EFF;");
         var background = defaultLabel.getBackground();
-        label.setBackground(new Background(new BackgroundFill(Color.rgb(0, 110, 255), null, null)));
-
+        //label.setBackground(new Background(new BackgroundFill(Color.rgb(0, 110, 255), null, null)));//blue cursor
+        label.setBackground(new Background(new BackgroundFill(Color.rgb(127,255,212), null, null)));
         int nextpointer = this.getPointer() + 1;
         clearLabel(nextpointer);
 
 
+    }
+
+    public void processInputtedText() {
+        setVisibleInfoLabels(true);
     }
 }

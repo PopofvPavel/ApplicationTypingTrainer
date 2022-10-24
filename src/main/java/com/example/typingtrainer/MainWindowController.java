@@ -227,11 +227,7 @@ public class MainWindowController {
                     case ALT:
                     case ESCAPE:
                         controller.getNextParagraphButton().requestFocus();
-//                        try {
-//                            controller.processInputtedText();
-//                        } catch (IOException e) {
-//                            throw new RuntimeException(e);
-//                        }
+                        controller.processInputtedText();
                         break;
                     case CONTROL:
                     case SHIFT:

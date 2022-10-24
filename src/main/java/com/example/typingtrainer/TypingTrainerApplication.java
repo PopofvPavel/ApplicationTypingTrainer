@@ -1,5 +1,4 @@
 package com.example.typingtrainer;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,6 +15,10 @@ public class TypingTrainerApplication extends Application {
         stage.setTitle("TypingTrainer");
         stage.setScene(scene);
         stage.show();
+
+
+        //animation D:\AARadik\JavaWorkspace\AnimationFX_Lib
+
     }
 
     public static void main(String[] args) {

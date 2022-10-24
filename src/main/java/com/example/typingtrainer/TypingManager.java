@@ -14,60 +14,6 @@ public class TypingManager {
 
     }
 
-    public static void ProcessInput(TypeChar... typeChars) throws IOException {
-        int i = 0;
-        int code = System.in.read();
-        char ch = (char) code;
-
-
-        int doubleEnterPressCounter = 0;
-        while ((ch == '\n') && (i == 0)) { //for enter double click
-            doubleEnterPressCounter = ProcessDoubleEnter(doubleEnterPressCounter);
-            code = System.in.read();
-            ch = (char) code;
-        }
-
-        while ((ch != '\n')) {
-            try {
-                if ((i == 0) && (ch == '/')) {
-                    ProcessCommand();
-                }
-
-
-                if (ch == '/') {
-                    code = System.in.read();
-                    ch = (char) code;
-                    StringBuilder stringBuilder = new StringBuilder();
-                    while (ch != ' ') {
-                        stringBuilder.append(ch);
-                        typeChars[i].setTyped(ch);
-                        i++;
-                        code = System.in.read();
-                        ch = (char) code;
-                    }
-                    //MarkedWordsContainer.writeWordIntoLibrary(stringBuilder.toString());
-                }
-
-                typeChars[i].setTyped(ch);
-                i++;
-
-
-                code = System.in.read();
-                ch = (char) code;
-
-                if ((ch == ' ') && (typeChars[i - 1].getTyped() == ' ')) {//for double space
-                    i--; //this space will be rewritten in previous item
-
-                }
-
-            } catch (ArrayIndexOutOfBoundsException e) {
-                break;
-            }
-
-        }
-
-    }
-
     private static void ProcessCommand() {
         int code = 0;
         try {

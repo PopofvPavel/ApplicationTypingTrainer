@@ -131,21 +131,63 @@ public class TypingWindowController {
 
 
     }
+    @FXML
+    private void startNewParagraph() throws IndexOutOfBoundsException {
 
+        this.typeChars = null;
+        int paragraphNumber = getParagraphNumber();
+        String paragraph = this.paragraphs.get(paragraphNumber);
+        int paragraphLength = paragraph.length();
+
+        setVisibleInfoLabels(false);
+
+        this.typeChars = new TypeChar[paragraphLength];
+        paragraphNumberLabel.setText(Integer.toString(paragraphNumber + 1));
+        inputText.setText("");
+        TypingManager.setCorrectChars(paragraph, typeChars);
+        textField.setText(paragraph);
+        if (paragraphNumber < paragraphs.size()) {
+            setParagraphNumber(++paragraphNumber);
+        } else {
+            System.out.println("end of file" + paragraphs.size());
+        }
+
+
+    }
     private void onExitButtonClick() throws IOException {
         exitProgram();
 
     }
 
     protected void exitProgram() throws IOException {
-        File file = ProgramDataContainer.getParagraphNumberFile();
-        FileWriter fileWriter = new FileWriter(file, false);
-        fileWriter.write(Integer.toString(this.paragraphNumber));
-        fileWriter.close();
+        saveParagraphNumber();
+        updateEveryBookParagraphNumberFile();
 
-        //test
+        System.exit(0);
+    }
+
+    private void updateEveryBookParagraphNumberFile() throws IOException {
         File everyBookParagraphNumberFile = ProgramDataContainer.getEveryBookParagraphNumberFile();
-        Map<String, Integer>  booksMap= new HashMap();
+        Map<String, Integer> booksMap= new HashMap();
+        fillBooksMapWithExistingFIles(everyBookParagraphNumberFile, booksMap);
+        booksMap.put(path, this.paragraphNumber);
+        rewriteEveryBookParagraphNumberFile(everyBookParagraphNumberFile, booksMap);
+
+    }
+
+    private void rewriteEveryBookParagraphNumberFile(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
+        FileWriter fileWriter2 = new FileWriter(everyBookParagraphNumberFile, false);
+        for(Map.Entry<String, Integer> entry : booksMap.entrySet()){
+            fileWriter2.write(entry.getKey());
+            fileWriter2.write("\n");
+            fileWriter2.write(entry.getValue().toString());
+            fileWriter2.write("\n");
+
+        }
+        fileWriter2.close();
+    }
+
+    private void fillBooksMapWithExistingFIles(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
         if (everyBookParagraphNumberFile.exists()) {
             FileReader fileReader = new FileReader(everyBookParagraphNumberFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -162,22 +204,16 @@ public class TypingWindowController {
 
             }
         }
-        booksMap.put(path, this.paragraphNumber);
-
-        FileWriter fileWriter2 = new FileWriter(everyBookParagraphNumberFile, false);
-        for(Map.Entry<String, Integer> entry : booksMap.entrySet()){
-            fileWriter2.write(entry.getKey());
-            fileWriter2.write("\n");
-            fileWriter2.write(entry.getValue().toString());
-            fileWriter2.write("\n");
-
-        }
-
-        fileWriter2.close();
-
-        // end of test
-        System.exit(0);
     }
+
+    private void saveParagraphNumber() throws IOException {
+        File file = ProgramDataContainer.getParagraphNumberFile();
+        FileWriter fileWriter = new FileWriter(file, false);
+        fileWriter.write(Integer.toString(this.paragraphNumber));
+        fileWriter.close();
+    }
+
+
 
     private void onPreviousParagraphButtonClick() {
         setParagraphNumber(--paragraphNumber);
@@ -204,29 +240,7 @@ public class TypingWindowController {
 
     }
 
-    @FXML
-    private void startNewParagraph() throws IndexOutOfBoundsException {
 
-        this.typeChars = null;
-        int paragraphNumber = getParagraphNumber();
-        String paragraph = this.paragraphs.get(paragraphNumber);
-        int paragraphLength = paragraph.length();
-
-        setVisibleInfoLabels(false);
-
-        this.typeChars = new TypeChar[paragraphLength];
-        paragraphNumberLabel.setText(Integer.toString(paragraphNumber + 1));
-        inputText.setText("");
-        TypingManager.setCorrectChars(paragraph, typeChars);
-        textField.setText(paragraph);
-        if (paragraphNumber < paragraphs.size()) {
-            setParagraphNumber(++paragraphNumber);
-        } else {
-            System.out.println("end of file" + paragraphs.size());
-        }
-
-
-    }
 
     private void setVisibleInfoLabels(boolean isVisible) {
         this.WPMLabel.setVisible(isVisible);

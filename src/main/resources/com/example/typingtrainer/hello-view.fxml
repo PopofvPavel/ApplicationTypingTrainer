@@ -15,7 +15,7 @@
       <Button fx:id="typeCharButton" layoutX="153.0" layoutY="193.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Button" />
       <AnchorPane layoutX="14.0" layoutY="436.0" prefHeight="436.0" prefWidth="639.0" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="947.0" AnchorPane.topAnchor="436.0">
          <children>
-            <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="77.0" layoutY="111.0" prefHeight="55.0" prefWidth="519.0" promptText="Enter a path to the file" style="-fx-border-radius: 20; -fx-background-radius: 10101010;" text="Books/Harry Potter/CHAPTERS/CHAPTER TWELVE   " AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
+            <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="77.0" layoutY="111.0" prefHeight="55.0" prefWidth="527.0" promptText="Enter a path to the file" style="-fx-border-radius: 20; -fx-background-radius: 10101010;" text="Books/Harry Potter/CHAPTERS/CHAPTER THIRTEEN   " AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -30,7 +30,7 @@
                   <Font size="22.0" />
                </font>
             </TextField>
-            <TextField fx:id="checkDateTextField" focusTraversable="false" layoutX="172.0" layoutY="250.0" prefHeight="55.0" prefWidth="397.0" promptText="Here you will see check result" style="-fx-border-radius: 20; -fx-background-radius: 2222;" AnchorPane.topAnchor="250.0">
+            <TextField fx:id="checkDateTextField" focusTraversable="false" layoutX="172.0" layoutY="250.0" prefHeight="55.0" prefWidth="406.0" promptText="Here you will see check result" style="-fx-border-radius: 20; -fx-background-radius: 2222;" AnchorPane.topAnchor="250.0">
                <font>
                   <Font size="22.0" />
                </font>
