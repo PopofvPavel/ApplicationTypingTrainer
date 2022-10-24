@@ -1,8 +1,5 @@
 package com.example.typingtrainer;
 
-//import com.gluonhq.charm.glisten.mvc.View;
-
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,17 +11,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class TypingWindowController {
-    boolean isFinished = false;
     private int paragraphNumber = ProgramDataContainer.getParagraph() - 1;
 
-    private String path = ProgramDataContainer.getPath();
+    private final String path = ProgramDataContainer.getPath();
 
     public int getParagraphNumber() {
         return paragraphNumber;
@@ -47,7 +42,7 @@ public class TypingWindowController {
     }
 
     TypeChar[] typeChars;
-    private ArrayList<String> paragraphs = text.getParagraphs();
+    private final ArrayList<String> paragraphs = text.getParagraphs();
 
     long startTime;
 
@@ -58,9 +53,6 @@ public class TypingWindowController {
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
-
-    @FXML
-    private ResourceBundle resources;
 
     @FXML
     private Text paragraphNumberLabel;
@@ -76,8 +68,6 @@ public class TypingWindowController {
     private Text accuracyPercent;
 
     @FXML
-    private Text accuracyStringText;
-    @FXML
     private Text paragraphsAmount;
 
     @FXML
@@ -91,9 +81,6 @@ public class TypingWindowController {
 
     @FXML
     private Button backButton;
-
-    @FXML
-    private URL location;
 
     @FXML
     private Text textField;
@@ -131,6 +118,7 @@ public class TypingWindowController {
 
 
     }
+
     @FXML
     private void startNewParagraph() throws IndexOutOfBoundsException {
 
@@ -154,6 +142,7 @@ public class TypingWindowController {
 
 
     }
+
     private void onExitButtonClick() throws IOException {
         exitProgram();
 
@@ -168,8 +157,8 @@ public class TypingWindowController {
 
     private void updateEveryBookParagraphNumberFile() throws IOException {
         File everyBookParagraphNumberFile = ProgramDataContainer.getEveryBookParagraphNumberFile();
-        Map<String, Integer> booksMap= new HashMap();
-        fillBooksMapWithExistingFIles(everyBookParagraphNumberFile, booksMap);
+        Map<String, Integer> booksMap = new HashMap();
+        fillBooksMapWithExistingFiles(everyBookParagraphNumberFile, booksMap);
         booksMap.put(path, this.paragraphNumber);
         rewriteEveryBookParagraphNumberFile(everyBookParagraphNumberFile, booksMap);
 
@@ -177,7 +166,7 @@ public class TypingWindowController {
 
     private void rewriteEveryBookParagraphNumberFile(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
         FileWriter fileWriter2 = new FileWriter(everyBookParagraphNumberFile, false);
-        for(Map.Entry<String, Integer> entry : booksMap.entrySet()){
+        for (Map.Entry<String, Integer> entry : booksMap.entrySet()) {
             fileWriter2.write(entry.getKey());
             fileWriter2.write("\n");
             fileWriter2.write(entry.getValue().toString());
@@ -187,20 +176,17 @@ public class TypingWindowController {
         fileWriter2.close();
     }
 
-    private void fillBooksMapWithExistingFIles(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
+    private void fillBooksMapWithExistingFiles(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
         if (everyBookParagraphNumberFile.exists()) {
             FileReader fileReader = new FileReader(everyBookParagraphNumberFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             //String line = null;
-            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()){
-                if (line != null){
-                    String bookPath = line;
-                    line = bufferedReader.readLine();
-                    int paragraphNumber = Integer.parseInt(line);
-                    booksMap.put(bookPath, paragraphNumber);
-
-                }
+            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
+                String bookPath = line;
+                line = bufferedReader.readLine();
+                int paragraphNumber = Integer.parseInt(line);
+                booksMap.put(bookPath, paragraphNumber);
 
             }
         }
@@ -212,7 +198,6 @@ public class TypingWindowController {
         fileWriter.write(Integer.toString(this.paragraphNumber));
         fileWriter.close();
     }
-
 
 
     private void onPreviousParagraphButtonClick() {
@@ -241,7 +226,6 @@ public class TypingWindowController {
     }
 
 
-
     private void setVisibleInfoLabels(boolean isVisible) {
         this.WPMLabel.setVisible(isVisible);
         this.wordsTypedCorrectLabel.setVisible(isVisible);
@@ -262,9 +246,6 @@ public class TypingWindowController {
         return nextParagraphButton;
     }
 
-    public void setNextParagraphButton(Button nextParagraphButton) {
-        this.nextParagraphButton = nextParagraphButton;
-    }
 
     private void openMainWindow() {
 
@@ -302,7 +283,7 @@ public class TypingWindowController {
         typedText = getClearedTypedTextFromSlashes(typedText);
 
         setInputtedTextInTypeChars(typedText);
-        String accuracyString = processTypedCharsAccuracy(typeChars);//set field accuracyPercent
+        //String accuracyString = processTypedCharsAccuracy(typeChars);//set field accuracyPercent
 
         if (!markedWords.isEmpty()) {
             for (String markedWord : markedWords) {
@@ -311,15 +292,15 @@ public class TypingWindowController {
         }
 
         long endTime = System.currentTimeMillis();
-        double WPM = (double)this.typeChars.length / 5.0 / (((double)endTime - (double)this.getStartTime()) / 1000.0 / 60.0 );
-        String WPMString =  String.format("%.1f", WPM);
+        double WPM = (double) this.typeChars.length / 5.0 / (((double) endTime - (double) this.getStartTime()) / 1000.0 / 60.0);
+        String WPMString = String.format("%.1f", WPM);
         this.WPM.setText(WPMString);
 
         System.out.println("Typed text:" + typedText);
         System.out.println("Typed words:" + words);
         System.out.println("Marked words:" + markedWords);
-        System.out.println("Typechars len:" + (double)this.typeChars.length + "\nlen/5 = " + (double)this.typeChars.length / 5
-        + " sec " + (((double)endTime - (double)this.getStartTime()) / 1000.0) + " WPM = " + WPM);
+        System.out.println("Typechars len:" + (double) this.typeChars.length + "\nlen/5 = " + (double) this.typeChars.length / 5
+                + " sec " + (((double) endTime - (double) this.getStartTime()) / 1000.0) + " WPM = " + WPM);
 
 
     }
@@ -360,8 +341,8 @@ public class TypingWindowController {
         int misprinted = 0;
         int correctPrinted = 0;
 
-        for (int i = 0; i < typeChars.length; i++) {
-            if (!typeChars[i].isTypedCorrect()) {
+        for (TypeChar typeChar : typeChars) {
+            if (!typeChar.isTypedCorrect()) {
                 accuracyResult.append("X");
                 misprinted++;
             } else {
@@ -378,19 +359,16 @@ public class TypingWindowController {
     }
 
     private ArrayList<String> getInputTextWords(String typedText) {
-        ArrayList<String> words = new ArrayList<String>();
+        ArrayList<String> words = new ArrayList<>();
         String[] wordsSplit = typedText.split(" ");
-        for (String word : wordsSplit) {
-
-            words.add(word);
-        }
+        Collections.addAll(words, wordsSplit);
 
 
         return words;
     }
 
     private ArrayList<String> getMarkedWords(ArrayList<String> words) {
-        ArrayList<String> markedWords = new ArrayList<String>();
+        ArrayList<String> markedWords = new ArrayList<>();
         for (String word : words) {
             if (word.charAt(0) == '/') {
                 word = word.replace('/', ' ').trim();
