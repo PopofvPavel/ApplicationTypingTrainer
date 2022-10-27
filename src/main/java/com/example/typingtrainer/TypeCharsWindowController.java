@@ -14,11 +14,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 
 public class TypeCharsWindowController {
@@ -30,7 +28,9 @@ public class TypeCharsWindowController {
     public int getPointer() {
         return pointer;
     }
-    private String path = ProgramDataContainer.getPath();
+
+    private final String path = ProgramDataContainer.getPath();
+
     public void setPointer(int i) {
         this.pointer = i;
     }
@@ -54,13 +54,8 @@ public class TypeCharsWindowController {
     private int paragraphNumber = ProgramDataContainer.getParagraph() - 1;
 
     TypeChar[] typeChars;
-    private ArrayList<String> paragraphs = text.getParagraphs();
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
+    private final ArrayList<String> paragraphs = text.getParagraphs();
+    private ArrayList<String> markedWords;
     @FXML
     private Text WPM;
 
@@ -128,8 +123,8 @@ public class TypeCharsWindowController {
 
     private void updateEveryBookParagraphNumberFile() throws IOException {
         File everyBookParagraphNumberFile = ProgramDataContainer.getEveryBookParagraphNumberFile();
-        Map<String, Integer> booksMap= new HashMap();
-        fillBooksMapWithExistingFIles(everyBookParagraphNumberFile, booksMap);
+        Map<String, Integer> booksMap = new HashMap();
+        fillBooksMapWithExistingFiles(everyBookParagraphNumberFile, booksMap);
         booksMap.put(path, this.paragraphNumber);
         rewriteEveryBookParagraphNumberFile(everyBookParagraphNumberFile, booksMap);
 
@@ -137,7 +132,7 @@ public class TypeCharsWindowController {
 
     private void rewriteEveryBookParagraphNumberFile(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
         FileWriter fileWriter2 = new FileWriter(everyBookParagraphNumberFile, false);
-        for(Map.Entry<String, Integer> entry : booksMap.entrySet()){
+        for (Map.Entry<String, Integer> entry : booksMap.entrySet()) {
             fileWriter2.write(entry.getKey());
             fileWriter2.write("\n");
             fileWriter2.write(entry.getValue().toString());
@@ -147,20 +142,17 @@ public class TypeCharsWindowController {
         fileWriter2.close();
     }
 
-    private void fillBooksMapWithExistingFIles(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
+    private void fillBooksMapWithExistingFiles(File everyBookParagraphNumberFile, Map<String, Integer> booksMap) throws IOException {
         if (everyBookParagraphNumberFile.exists()) {
             FileReader fileReader = new FileReader(everyBookParagraphNumberFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             //String line = null;
-            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()){
-                if (line != null){
-                    String bookPath = line;
-                    line = bufferedReader.readLine();
-                    int paragraphNumber = Integer.parseInt(line);
-                    booksMap.put(bookPath, paragraphNumber);
-
-                }
+            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
+                String bookPath = line;
+                line = bufferedReader.readLine();
+                int paragraphNumber = Integer.parseInt(line);
+                booksMap.put(bookPath, paragraphNumber);
 
             }
         }
@@ -223,21 +215,15 @@ public class TypeCharsWindowController {
     }
 
     private void getFocusOnTypeChars() throws IOException {
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("TypeCharsWindow.fxml"));
-//        loader.load();
-//        Parent root = loader.getRoot();
-//        root.requestFocus();
         this.vbox.requestFocus();
+
     }
 
     private void putComponents() {//need 19 hboxes
-
 //        Label label = new Label("GG");
 //        label.setAlignment(Pos.BASELINE_LEFT);
 //        label.setVisible(true);
         //vbox.getChildren().addAll(new Button("Cut"), new Button("Copy"), new Button("Paste"));
-
 
         ArrayList<HBox> hboxes = getHboxes(TYPECHARS_ROWS);//getting empty hboxes
         fillHboxes(hboxes);
@@ -282,16 +268,22 @@ public class TypeCharsWindowController {
         return labels;
     }
 
-    public void processKeyPut(KeyCode code, int pointer) {
+    public void processKeyPut(KeyCode code, int pointer, boolean isShiftPressed) {
         char ch = getCh(code, pointer);
         this.typeChars[pointer].setTyped(ch);//????
-        System.out.println("POS: " + pointer + "Is correct: " + this.typeChars[pointer].isTypedCorrect() + " Correct: " + this.typeChars[pointer].getCorrect() + " Typed: " + this.typeChars[pointer].getTyped());
+        System.out.println("POS: " + pointer + "Is correct: " + this.typeChars[pointer].isTypedCorrect() + " Correct: " + this.typeChars[pointer].getCorrect() + " Typed: " + this.typeChars[pointer].getTyped() +
+                "isShiftPressed " + isShiftPressed);
         System.out.println(ch);
 
-        if (!this.typeChars[pointer].isTypedCorrect()) {//all inputted keys are in upper case
+/*        if (!this.typeChars[pointer].isTypedCorrect()) {//all inputted keys are in upper case
+            this.typeChars[pointer].setTyped(Character.toLowerCase(ch));
+
+        }*/
+        if (!isShiftPressed) {//set to lower case if not shift is pressed
             this.typeChars[pointer].setTyped(Character.toLowerCase(ch));
 
         }
+
         Label label = getCurrentLabel(pointer);
         if (this.typeChars[pointer].isTypedCorrect()) {
             label.setStyle("-fx-background-color: #6EDD4B;");
@@ -305,26 +297,37 @@ public class TypeCharsWindowController {
         if (code.equals(KeyCode.QUOTE)) {
             if ((this.typeChars[pointer].getCorrect() == '«') || (this.typeChars[pointer].getCorrect() == '»')) {
                 return '"';
+            } else if ((this.typeChars[pointer].getCorrect() == '‘')) {
+                return '‘';
             } else {
                 return '\'';
             }
         }
-        if (code.equals(KeyCode.SLASH)){
-            if(this.typeChars[pointer].getCorrect() == '?'){
+        if (code.equals(KeyCode.SLASH)) {
+            if (this.typeChars[pointer].getCorrect() == '?') {
                 return '?';
             }
         }
-        if (code.equals(KeyCode.DIGIT1)){
-            if(this.typeChars[pointer].getCorrect() == '!'){
+        if (code.equals(KeyCode.DIGIT1)) {
+            if (this.typeChars[pointer].getCorrect() == '!') {
                 return '!';
             }
-        }if (code.equals(KeyCode.DIGIT9)){
-            if(this.typeChars[pointer].getCorrect() == '('){
+        }
+        if (code.equals(KeyCode.DIGIT9)) {
+            if (this.typeChars[pointer].getCorrect() == '(') {
                 return '(';
             }
-        }if (code.equals(KeyCode.DIGIT0)){
-            if(this.typeChars[pointer].getCorrect() == ')'){
+        }
+        if (code.equals(KeyCode.DIGIT0)) {
+            if (this.typeChars[pointer].getCorrect() == ')') {
                 return ')';
+            }
+        }
+        if (code.equals(KeyCode.SEMICOLON)) {
+            if (this.typeChars[pointer].getCorrect() == ':') {
+                return ':';
+            } else {
+                return ';';
             }
         }
         return code.getChar().charAt(0);
@@ -355,6 +358,7 @@ public class TypeCharsWindowController {
         int paragraphNumber = getParagraphNumber();
         String paragraph = this.paragraphs.get(paragraphNumber);
         int paragraphLength = paragraph.length();
+        this.markedWords = new ArrayList<>();
 
         //setVisibleInfoLabels(false);
 
@@ -370,7 +374,7 @@ public class TypeCharsWindowController {
             System.out.println(this.typeChars[i].toString());
         }
         setLabelsWithParagraphText(paragraph);
-        System.out.println(paragraph.toString());
+        System.out.println(paragraph);
 //        TypingManager.setCorrectChars(paragraph, typeChars);
 
 
@@ -387,10 +391,10 @@ public class TypeCharsWindowController {
     }
 
     private void setVisibleInfoLabels(boolean isVisible) {//add commented labels
-        this.WPMLabel.setVisible(isVisible);
+        setLabelInvisible(this.WPMLabel, isVisible);
         //this.wordsTypedCorrectLabel.setVisible(isVisible);
         this.ofLabel.setVisible(isVisible);
-        this.percentLabel.setVisible(isVisible);
+        setLabelInvisible(this.percentLabel, isVisible);
 
         this.accuracyPercent.setVisible(isVisible);
         this.WPM.setVisible(isVisible);
@@ -399,7 +403,7 @@ public class TypeCharsWindowController {
     }
 
     private void resetParagraph() {
-        this. vbox.getChildren().clear();
+        this.vbox.getChildren().clear();
         this.pointer = 0;
         this.typeChars = null;
     }
@@ -412,20 +416,23 @@ public class TypeCharsWindowController {
         for (int row = 0; row < this.TYPECHARS_ROWS; row++) {
             for (int labelIndex = 0; labelIndex < LABELS_IN_ROW; labelIndex++) {
                 if (charIndex < paragraphLength) {
-                    ((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)).setText(Character.toString(paragraph.charAt(charIndex)));
+                    setLabelWithChar(row, labelIndex, Character.toString(paragraph.charAt(charIndex)));
                     charIndex++;
                 } else {
-                    ((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)).setVisible(false);
+                    setLabelInvisible(((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)), false);
                     //break;
                 }
 
             }
         }
-        //((Label) ((HBox) (this.vbox.getChildren().get(0))).getChildren().get(charIndex)).setText(Character.toString(symbol));
-//        if (charIndex % 2 == 0) {
-//            ((Label) ((HBox) (this.vbox.getChildren().get(0))).getChildren().get(charIndex)).setStyle("-fx-background-color: #A04B88;");
-//            //((Label)((HBox)(this.vbox.getChildren().get(0))).getChildren().get(i)).setMaxSize(10,10);//not working
-//        }
+    }
+
+    private void setLabelInvisible(Label vbox, boolean b) {
+        vbox.setVisible(b);
+    }
+
+    private void setLabelWithChar(int row, int labelIndex, String paragraph) {
+        ((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)).setText(paragraph);
     }
 
     public int getParagraphNumber() {
@@ -451,9 +458,9 @@ public class TypeCharsWindowController {
         label.setStyle("-fx-background-color: #7FFFD4;");
         Label defaultLabel = new Label("10");
         defaultLabel.setStyle("-fx-background-color: #006EFF;");
-        var background = defaultLabel.getBackground();
+        //var background = defaultLabel.getBackground();
         //label.setBackground(new Background(new BackgroundFill(Color.rgb(0, 110, 255), null, null)));//blue cursor
-        label.setBackground(new Background(new BackgroundFill(Color.rgb(127,255,212), null, null)));
+        label.setBackground(new Background(new BackgroundFill(Color.rgb(127, 255, 212), null, null)));
         int nextpointer = this.getPointer() + 1;
         clearLabel(nextpointer);
 
@@ -462,5 +469,63 @@ public class TypeCharsWindowController {
 
     public void processInputtedText() {
         setVisibleInfoLabels(true);
+
+        if (!markedWords.isEmpty()) {
+            for (String markedWord : markedWords) {
+                try {
+                    MarkedWordsContainer.writeWordIntoLibrary(markedWord);
+                } catch (IOException e) {
+                    System.out.println("Problems with writing marked words into file");
+                }
+            }
+        }
+    }
+
+    public void putNextWordIntoLibraryFile(int pointer) {
+        int counter = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int row = 0; row < this.TYPECHARS_ROWS; row++) {
+            for (int labelIndex = 0; labelIndex < LABELS_IN_ROW; labelIndex++) {
+                if (counter == pointer) {
+                    int appendIndexRow = row;
+                    int appendIndexLabel = labelIndex;
+                    if(labelCharIsSpace(appendIndexRow, appendIndexLabel)){// if pointer before word in space it will move it right to 1 position
+                        if(appendIndexLabel < LABELS_IN_ROW - 1){//maybe exception
+                            appendIndexLabel++;
+                        } else {
+                            appendIndexLabel = 0;
+                            appendIndexRow++;
+                        }
+                    }
+                    while (!labelCharIsSpace(appendIndexRow, appendIndexLabel)) {//while char not null append to string builder
+                        stringBuilder.append(getLabelChar(appendIndexRow, appendIndexLabel));
+                        if(appendIndexLabel < LABELS_IN_ROW - 1){
+                            appendIndexLabel++;
+                        } else {
+                            appendIndexLabel = 0;
+                            appendIndexRow++;
+                        }
+
+
+
+                    }
+
+//                    setLabelWithChar(row, labelIndex, Character.toString(paragraph.charAt(charIndex)));
+//                    charIndex++;
+                }
+                counter++;
+            }
+        }
+        System.out.println("StringBuilder = " + stringBuilder);
+
+        this.markedWords.add(stringBuilder.toString());
+    }
+
+    private String getLabelChar(int appendIndexRow, int appendIndexLabel) {
+        return ((Label) ((HBox) (this.vbox.getChildren().get(appendIndexRow))).getChildren().get(appendIndexLabel)).getText();
+    }
+
+    private boolean labelCharIsSpace(int row, int labelIndex) {
+        return ((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)).getText().equals(" ");
     }
 }

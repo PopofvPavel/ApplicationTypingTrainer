@@ -21,7 +21,7 @@
                   <Font size="19.0" />
                </font>
             </Text>
-            <Button fx:id="nextParagraphButton" layoutX="15.0" layoutY="451.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="130.0" text="Next" textAlignment="CENTER" textFill="#ee8b35">
+            <Button fx:id="nextParagraphButton" layoutX="15.0" layoutY="451.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="130.0" style="-fx-background-radius: 6666;" text="Next" textAlignment="CENTER" textFill="#ee8b35">
                <font>
                   <Font size="24.0" />
                </font>
@@ -36,7 +36,7 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Button fx:id="previousParagraphButton" layoutX="15.0" layoutY="391.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="130.0" text="Prevoius" textAlignment="CENTER" textFill="#ee8b35">
+            <Button fx:id="previousParagraphButton" layoutX="15.0" layoutY="391.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="130.0" style="-fx-background-radius: 6666;" text="Prevoius" textAlignment="CENTER" textFill="#ee8b35">
                <font>
                   <Font size="24.0" />
                </font>
@@ -101,12 +101,12 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <Button fx:id="backButton" layoutX="15.0" layoutY="540.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="138.0" text="Go back">
+            <Button fx:id="backButton" layoutX="15.0" layoutY="540.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="138.0" style="-fx-background-radius: 6666;" text="Go back">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="exitButton" layoutX="18.0" layoutY="635.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="130.0" text="EXIT">
+            <Button fx:id="exitButton" layoutX="19.0" layoutY="627.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="130.0" style="-fx-background-radius: 6666;" text="EXIT">
                <font>
                   <Font size="27.0" />
                </font>

@@ -222,6 +222,7 @@ public class MainWindowController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 KeyCode code = keyEvent.getCode();
+
                 System.out.println("You pressed key:" + code);
                 switch (code) {
                     case ALT:
@@ -231,13 +232,14 @@ public class MainWindowController {
                         break;
                     case CONTROL:
                     case SHIFT:
+                    case WINDOWS:
                         break;
                     case F10:
-//                        try {
-//                            controller.exitProgram();
-//                        } catch (IOException e) {
-//                            System.out.println("problems with exit");
-//                        }
+                        try {
+                            controller.exitProgram();
+                        } catch (IOException e) {
+                            System.out.println("problems with exit");
+                        }
                         break;
                     case BACK_SPACE:
                         int ptr = controller.getPointer();
@@ -246,14 +248,23 @@ public class MainWindowController {
                         controller.highlightCurrentPosition(controller.getPointer());
 
                         break;
-
+                    case SLASH: {
+                        int pointer = controller.getPointer();
+                        if (keyEvent.isControlDown()) {
+                            controller.putNextWordIntoLibraryFile(pointer);
+                        } else {
+                            controller.processKeyPut(code, pointer, keyEvent.isShiftDown());
+                            controller.setPointer(++pointer);
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        }
+                        break;
+                    }
                     default:
 
                         int pointer = controller.getPointer();
-                        controller.processKeyPut(code, pointer);
-
+                        controller.processKeyPut(code, pointer, keyEvent.isShiftDown());
                         controller.setPointer(++pointer);
-                        controller.highlightCurrentPosition(controller.getPointer());
+                        controller.highlightCurrentPosition(controller.getPointer());//fix minus border ex
 //                        long startTIme = System.currentTimeMillis();
 //                        controller.setStartTime(startTIme);
                         break;
