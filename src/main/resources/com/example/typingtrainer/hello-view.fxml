@@ -56,7 +56,7 @@
       </AnchorPane>
       <AnchorPane layoutX="129.0" layoutY="135.0" prefHeight="136.0" prefWidth="200.0" style="-fx-background-color: #FAEEDD; -fx-background-radius: 10;">
          <children>
-            <RadioButton fx:id="typeCharsRadioButton" layoutX="22.0" layoutY="61.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="141.0" selected="true" style="-fx-background-color: #FAEEDD; -fx-background-radius: 1111;" text="Default " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+            <RadioButton fx:id="defaultRadioButton" layoutX="22.0" layoutY="61.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="141.0" selected="true" style="-fx-background-color: #FAEEDD; -fx-background-radius: 1111;" text="Default " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
                <font>
                   <Font size="18.0" />
                </font>

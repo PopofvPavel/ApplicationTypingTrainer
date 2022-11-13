@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -52,8 +53,10 @@ public class MainWindowController {
 
     @FXML
     private TextField paragraphNumberTextField;
-
-
+    @FXML
+    private RadioButton defaultRadioButton;
+    @FXML
+    private RadioButton textFieldRadioButton;
     @FXML
     private TextField pathToFileTextField;
 
@@ -67,6 +70,8 @@ public class MainWindowController {
     @FXML
     void initialize() throws IOException {
         startButton.requestFocus();
+        textFieldRadioButton.setOnAction(actionEvent -> onTextFieldRadioButtonClick());
+        defaultRadioButton.setOnAction(actionEvent -> onDefaultRadioButtonClick());
         defaultPathField.setOnAction(actionEvent -> onDefaultPathFieldClick());
         this.pathToFileTextField.setText(getCurrentBookPath());
         saveFileButton.setOnAction(actionEvent -> {
@@ -78,20 +83,30 @@ public class MainWindowController {
         });
         checkDataButton.setOnAction(actionEvent -> onCheckDataButtonClick());
         //fileChooserButton.setOnAction(actionEvent -> chooseNewBookInFileManager());
-        startButton.setOnAction(actionEvent -> {
-            try {
-                onStartButtonClick();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        typeCharButton.setOnAction(actionEvent -> {
+        if (this.textFieldRadioButton.isSelected()) {
+            startButton.setOnAction(actionEvent -> {
+                try {
+                    onStartButtonClick();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } else if(this.defaultRadioButton.isSelected()){
+            startButton.setOnAction(actionEvent -> {
+                try {
+                    onOpenTypeCharsWindowCilck();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+/*        typeCharButton.setOnAction(actionEvent -> {
             try {
                 onOpenTypeCharsWindowCilck();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        });*/
         try {
             //String paragraphNumberString = getParagraphNumberFromFile();
             String path = pathToFileTextField.getText();
@@ -108,6 +123,15 @@ public class MainWindowController {
         }
 
 
+    }
+
+    private void onDefaultRadioButtonClick() {
+        defaultRadioButton.setSelected(true);
+        textFieldRadioButton.setSelected(false);
+    }
+    private void onTextFieldRadioButtonClick() {
+        textFieldRadioButton.setSelected(true);
+        defaultRadioButton.setSelected(false);
     }
 
     private String getCurrentBookPath() throws IOException {
