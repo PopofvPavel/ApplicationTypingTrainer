@@ -83,23 +83,7 @@ public class MainWindowController {
         });
         checkDataButton.setOnAction(actionEvent -> onCheckDataButtonClick());
         //fileChooserButton.setOnAction(actionEvent -> chooseNewBookInFileManager());
-        if (this.textFieldRadioButton.isSelected()) {
-            startButton.setOnAction(actionEvent -> {
-                try {
-                    onStartButtonClick();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        } else if(this.defaultRadioButton.isSelected()){
-            startButton.setOnAction(actionEvent -> {
-                try {
-                    onOpenTypeCharsWindowCilck();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
+        setStartButtonAction();
 /*        typeCharButton.setOnAction(actionEvent -> {
             try {
                 onOpenTypeCharsWindowCilck();
@@ -125,13 +109,36 @@ public class MainWindowController {
 
     }
 
+    private void setStartButtonAction() {
+        if (this.textFieldRadioButton.isSelected()) {
+            startButton.setOnAction(actionEvent -> {
+                try {
+                    onStartButtonClick();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } else if(this.defaultRadioButton.isSelected()){
+            startButton.setOnAction(actionEvent -> {
+                try {
+                    onOpenTypeCharsWindowCilck();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
     private void onDefaultRadioButtonClick() {
         defaultRadioButton.setSelected(true);
         textFieldRadioButton.setSelected(false);
+        setStartButtonAction();
+
     }
     private void onTextFieldRadioButtonClick() {
         textFieldRadioButton.setSelected(true);
         defaultRadioButton.setSelected(false);
+        setStartButtonAction();
     }
 
     private String getCurrentBookPath() throws IOException {
