@@ -7,6 +7,16 @@ public class ProgramDataContainer {
     private static File file;
     private static File everyBookParagraphNumberFile = new File("Books/LOG/BooksParagraphs");
     private static File paragraphNumberFile = new File("Books/LOG/ParagraphLog");
+    private static File currentBookPathFile = new File("Books/LOG/CurrentBookPath");
+
+    public static File getCurrentBookPathFile() {
+        return currentBookPathFile;
+    }
+
+    public static void setCurrentBookPathFile(File currentBookPathFile) {
+        ProgramDataContainer.currentBookPathFile = currentBookPathFile;
+    }
+
     private static String path;
     private static int paragraph = 1;
 

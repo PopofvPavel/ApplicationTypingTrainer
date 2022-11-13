@@ -20,10 +20,11 @@ import java.util.Map;
 
 
 public class TypeCharsWindowController {
-    private static final double FONT_SIZE = 24;
-    private static final int TYPECHARS_ROWS = 19;
-    private static final int LABELS_IN_ROW = 110;
+    public static final double FONT_SIZE = 24;
+    public static final int TYPECHARS_ROWS = 22;
+    public static final int LABELS_IN_ROW = 100;
     private int pointer = 0;
+    private boolean isRussian = false;
 
     public int getPointer() {
         return pointer;
@@ -270,10 +271,18 @@ public class TypeCharsWindowController {
 
     public void processKeyPut(KeyCode code, int pointer, boolean isShiftPressed) {
         char ch = getCh(code, pointer);
+        boolean isRussianTranslated = false;
+
+        if (isRussianKeyBoard(pointer, isShiftPressed, ch)) {
+
+            ch = getRussianCh(ch, pointer);
+            isRussianTranslated = true;
+            this.isRussian = true;
+        }
         this.typeChars[pointer].setTyped(ch);//????
-        System.out.println("POS: " + pointer + "Is correct: " + this.typeChars[pointer].isTypedCorrect() + " Correct: " + this.typeChars[pointer].getCorrect() + " Typed: " + this.typeChars[pointer].getTyped() +
-                "isShiftPressed " + isShiftPressed);
-        System.out.println(ch);
+        System.out.println("ch =  " + ch + " Is correct: " + this.typeChars[pointer].isTypedCorrect() + " Correct: " + this.typeChars[pointer].getCorrect() + " Typed: " + "  " + this.typeChars[pointer].getTyped() +
+                "is Translated " + isRussianTranslated + "is Russian " + isRussian);
+        //System.out.println(ch);
 
 /*        if (!this.typeChars[pointer].isTypedCorrect()) {//all inputted keys are in upper case
             this.typeChars[pointer].setTyped(Character.toLowerCase(ch));
@@ -293,12 +302,38 @@ public class TypeCharsWindowController {
         }
     }
 
+    private boolean isRussianKeyBoard(int pointer, boolean isShiftPressed, char ch) {
+        return ((Character.toUpperCase(this.typeChars[pointer].getCorrect()) == RussianKeyCodeTranslator.getRussianChar(ch, isShiftPressed)) ||
+                (((this.typeChars[pointer].getCorrect()) == ',') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == '.') && this.isRussian && !isEnglishCharacter(this.typeChars[pointer - 1].getCorrect())) ||( ((this.typeChars[pointer].getCorrect()) == '…') && this.isRussian)
+                || (((this.typeChars[pointer].getCorrect()) == '?') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == ';') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == ':') && this.isRussian));
+    }
+
+    private boolean isEnglishCharacter(char correct) {
+        if ((correct >= 'a' && correct <= 'z') || (correct >= 'A' && correct <= 'Z')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private char getRussianCh(char ch, int pointer) {
+        if (((this.typeChars[pointer].getCorrect() == ',') && ((ch == '/') || (ch == '?')))) {
+            return ',';
+        } else if (((this.typeChars[pointer].getCorrect() == '.') && ((ch == '/') || (ch == '?')))) {
+            return '.';
+        }
+
+        return RussianKeyCodeTranslator.getRussianChar(ch, false);
+    }
+
     private char getCh(KeyCode code, int pointer) {
         if (code.equals(KeyCode.QUOTE)) {
             if ((this.typeChars[pointer].getCorrect() == '«') || (this.typeChars[pointer].getCorrect() == '»')) {
                 return '"';
             } else if ((this.typeChars[pointer].getCorrect() == '‘')) {
                 return '‘';
+            } else if ((this.typeChars[pointer].getCorrect() == '’')) {
+                return '’';
             } else {
                 return '\'';
             }
@@ -352,6 +387,7 @@ public class TypeCharsWindowController {
         resetParagraph();
         setVisibleInfoLabels(false);
         putComponents();
+        this.isRussian = false;
         paragraphNumberLabel.setText(Integer.toString(paragraphNumber + 1));
         this.highlightCurrentPosition(this.getPointer());
         this.typeChars = null;
@@ -461,8 +497,8 @@ public class TypeCharsWindowController {
         //var background = defaultLabel.getBackground();
         //label.setBackground(new Background(new BackgroundFill(Color.rgb(0, 110, 255), null, null)));//blue cursor
         label.setBackground(new Background(new BackgroundFill(Color.rgb(127, 255, 212), null, null)));
-        int nextpointer = this.getPointer() + 1;
-        clearLabel(nextpointer);
+        //int nextpointer = this.getPointer() + 1;
+        //clearLabel(nextpointer);
 
 
     }
@@ -487,25 +523,31 @@ public class TypeCharsWindowController {
         for (int row = 0; row < this.TYPECHARS_ROWS; row++) {
             for (int labelIndex = 0; labelIndex < LABELS_IN_ROW; labelIndex++) {
                 if (counter == pointer) {
+                    int newpointer = pointer;
                     int appendIndexRow = row;
                     int appendIndexLabel = labelIndex;
-                    if(labelCharIsSpace(appendIndexRow, appendIndexLabel)){// if pointer before word in space it will move it right to 1 position
-                        if(appendIndexLabel < LABELS_IN_ROW - 1){//maybe exception
+                    if (labelCharIsSpace(appendIndexRow, appendIndexLabel)) {// if pointer before word in space it will move it right to 1 position
+                        if (appendIndexLabel < LABELS_IN_ROW - 1) {//maybe exception
                             appendIndexLabel++;
+                            newpointer++;
                         } else {
                             appendIndexLabel = 0;
                             appendIndexRow++;
+                            newpointer++;
                         }
                     }
                     while (!labelCharIsSpace(appendIndexRow, appendIndexLabel)) {//while char not null append to string builder
                         stringBuilder.append(getLabelChar(appendIndexRow, appendIndexLabel));
-                        if(appendIndexLabel < LABELS_IN_ROW - 1){
+                        Label label = getCurrentLabel(newpointer);
+                        label.setStyle("-fx-background-color: #FFDB8B;");
+                        if (appendIndexLabel < LABELS_IN_ROW - 1) {
                             appendIndexLabel++;
+                            newpointer++;
                         } else {
                             appendIndexLabel = 0;
                             appendIndexRow++;
+                            newpointer++;
                         }
-
 
 
                     }
@@ -526,6 +568,99 @@ public class TypeCharsWindowController {
     }
 
     private boolean labelCharIsSpace(int row, int labelIndex) {
-        return ((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)).getText().equals(" ");
+        try {
+            return ((Label) ((HBox) (this.vbox.getChildren().get(row))).getChildren().get(labelIndex)).getText().equals(" ");
+        } catch (IndexOutOfBoundsException e) {
+            return true;
+        }
+    }
+
+    public int getWordLenghtToLeftFromPointer(int ptr) {
+        int counter = 0;
+        int offsetCounter = 0;
+        for (int row = 0; row < this.TYPECHARS_ROWS; row++) {
+            for (int labelIndex = 0; labelIndex < LABELS_IN_ROW; labelIndex++) {
+                if (counter == pointer) {
+                    int newpointer = pointer;
+                    int appendIndexRow = row;
+                    int appendIndexLabel = labelIndex;
+                    if (labelCharIsSpace(appendIndexRow, appendIndexLabel)) {// if pointer before word in space it will move it right to 1 position
+                        if (appendIndexLabel > 0) {//maybe exception
+                            appendIndexLabel--;
+                            newpointer--;
+                            offsetCounter++;
+                        } else {
+                            appendIndexLabel = LABELS_IN_ROW - 1;
+                            appendIndexRow--;
+                            newpointer--;
+                            offsetCounter++;
+                        }
+                    }
+                    while (!labelCharIsSpace(appendIndexRow, appendIndexLabel)) {//while char not null append to string builder
+                        Label label = getCurrentLabel(newpointer);
+                        //label.setStyle("-fx-background-color: #919192;");
+                        if (appendIndexLabel > 0) {//maybe exception
+                            appendIndexLabel--;
+                            newpointer--;
+                            offsetCounter++;
+                        } else {
+                            appendIndexLabel = LABELS_IN_ROW - 1;
+                            appendIndexRow--;
+                            newpointer--;
+                            offsetCounter++;
+                        }
+
+
+                    }
+
+//                    setLabelWithChar(row, labelIndex, Character.toString(paragraph.charAt(charIndex)));
+//                    charIndex++;
+                }
+                counter++;
+            }
+        }
+        return offsetCounter;
+    }
+
+    public int getWordLenghtToRightFromPointer(int pointer) {
+        int offsetCounter = 0;
+        for (int row = 0; row < this.TYPECHARS_ROWS; row++) {
+            for (int labelIndex = 0; labelIndex < LABELS_IN_ROW; labelIndex++) {
+                if (offsetCounter == pointer) {
+                    int newpointer = pointer;
+                    int appendIndexRow = row;
+                    int appendIndexLabel = labelIndex;
+                    if (labelCharIsSpace(appendIndexRow, appendIndexLabel)) {// if pointer before word in space it will move it right to 1 position
+                        if (appendIndexLabel < LABELS_IN_ROW - 1) {//maybe exception
+                            appendIndexLabel++;
+                            newpointer++;
+                            offsetCounter++;
+                        } else {
+                            appendIndexLabel = 0;
+                            appendIndexRow++;
+                            newpointer++;
+                            offsetCounter++;
+                        }
+                    }
+                    while (!labelCharIsSpace(appendIndexRow, appendIndexLabel)) {//while char not null append to string builder
+                        if (appendIndexLabel < LABELS_IN_ROW - 1) {
+                            appendIndexLabel++;
+                            newpointer++;
+                            offsetCounter++;
+                        } else {
+                            appendIndexLabel = 0;
+                            appendIndexRow++;
+                            newpointer++;
+                            offsetCounter++;
+                        }
+
+
+                    }
+
+                }
+                break;
+            }
+        }
+        return offsetCounter;
     }
 }

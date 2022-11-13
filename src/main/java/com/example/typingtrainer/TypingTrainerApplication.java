@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ public class TypingTrainerApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1600, 900);
         stage.setTitle("TypingTrainer");
         stage.setScene(scene);
+        stage.initStyle(StageStyle.DECORATED);
         stage.show();
 
 

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.typingtrainer.MainWindowController">
    <children>
@@ -12,10 +14,10 @@
             <Font size="28.0" />
          </font>
       </Button>
-      <Button fx:id="typeCharButton" layoutX="153.0" layoutY="193.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Button" />
+      <Button fx:id="typeCharButton" layoutX="474.0" layoutY="301.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Button" />
       <AnchorPane layoutX="14.0" layoutY="436.0" prefHeight="436.0" prefWidth="639.0" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="947.0" AnchorPane.topAnchor="436.0">
          <children>
-            <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="77.0" layoutY="111.0" prefHeight="55.0" prefWidth="536.0" promptText="Enter a path to the file" style="-fx-border-radius: 20; -fx-background-radius: 10101010;" text="Books/Harry Potter/CHAPTERS/CHAPTER FOURTEEN   " AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
+            <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="77.0" layoutY="111.0" prefHeight="55.0" prefWidth="536.0" promptText="Enter a path to the file" style="-fx-border-radius: 20; -fx-background-radius: 10101010;" text="Books/Harry Potter/CHAPTERS/CHAPTER FIFTEEN  " AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -40,6 +42,35 @@
                   <Font size="18.0" />
                </font>
             </Button>
+            <Button fx:id="saveFileButton" layoutX="264.0" layoutY="30.0" mnemonicParsing="false" onAction="#chooseNewBookInFileManager" prefHeight="55.0" prefWidth="100.0" style="-fx-background-radius: 6666;" text="Save">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Button>
+            <Button fx:id="defaultPathField" layoutX="378.0" layoutY="30.0" mnemonicParsing="false" onAction="#chooseNewBookInFileManager" prefHeight="55.0" prefWidth="127.0" style="-fx-background-radius: 6666;" text="Default">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="129.0" layoutY="135.0" prefHeight="136.0" prefWidth="200.0" style="-fx-background-color: #FAEEDD; -fx-background-radius: 10;">
+         <children>
+            <RadioButton fx:id="typeCharsRadioButton" layoutX="22.0" layoutY="61.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="141.0" selected="true" style="-fx-background-color: #FAEEDD; -fx-background-radius: 1111;" text="Default " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </RadioButton>
+            <Text layoutX="21.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Typing regime:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="2.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <RadioButton fx:id="textFieldRadioButton" layoutX="10.0" layoutY="89.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="141.0" style="-fx-background-color: #FAEEDD; -fx-background-radius: 1111;" text="Text field" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="80.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </RadioButton>
          </children>
       </AnchorPane>
    </children>

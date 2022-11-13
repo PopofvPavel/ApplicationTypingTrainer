@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainWindowController {
+    private static final String DEFAULT_PATH = "Books/Harry Potter/CHAPTERS/CHAPTER FIFTEEN";
     @FXML
     private Label welcomeText;
     @FXML
@@ -58,10 +59,23 @@ public class MainWindowController {
 
     @FXML
     private Button startButton;
+    @FXML
+    private Button saveFileButton;
+    @FXML
+    private Button defaultPathField;
 
     @FXML
-    void initialize() {
+    void initialize() throws IOException {
         startButton.requestFocus();
+        defaultPathField.setOnAction(actionEvent -> onDefaultPathFieldClick());
+        this.pathToFileTextField.setText(getCurrentBookPath());
+        saveFileButton.setOnAction(actionEvent -> {
+            try {
+                onSaveFileButtonClick();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         checkDataButton.setOnAction(actionEvent -> onCheckDataButtonClick());
         //fileChooserButton.setOnAction(actionEvent -> chooseNewBookInFileManager());
         startButton.setOnAction(actionEvent -> {
@@ -93,6 +107,30 @@ public class MainWindowController {
             System.err.println("nullpoint");
         }
 
+
+    }
+
+    private String getCurrentBookPath() throws IOException {
+        File currentBookPathFile = ProgramDataContainer.getCurrentBookPathFile();
+        FileReader fileReader = new FileReader(currentBookPathFile);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String currentBookPath = bufferedReader.readLine();
+        return currentBookPath;
+    }
+
+    private void onDefaultPathFieldClick() {
+        this.pathToFileTextField.setText(this.DEFAULT_PATH);
+    }
+
+    private void onSaveFileButtonClick() throws IOException {
+        String path = this.pathToFileTextField.getText();
+        File currentBookPathFile = ProgramDataContainer.getCurrentBookPathFile();
+
+        FileWriter fileWriter = new FileWriter(currentBookPathFile, false);
+        fileWriter.write(path);
+
+
+        fileWriter.close();
 
     }
 
@@ -178,15 +216,7 @@ public class MainWindowController {
                 return false;
             }
 
-        } catch (FileNotFoundException exception) {
-            checkDateTextField.setText(exception.getMessage());
-        } catch (NumberFormatException exception) {
-            checkDateTextField.setText(exception.getMessage());
-        } catch (NullPointerException exception) {
-            checkDateTextField.setText(exception.getMessage());
-        } catch (RuntimeException exception) {
-            checkDateTextField.setText(exception.getMessage());
-        } catch (InvalidObjectException exception) {
+        } catch (FileNotFoundException | InvalidObjectException | RuntimeException exception) {
             checkDateTextField.setText(exception.getMessage());
         }
         return false;
@@ -225,11 +255,11 @@ public class MainWindowController {
 
                 System.out.println("You pressed key:" + code);
                 switch (code) {
-                    case ALT:
                     case ESCAPE:
                         controller.getNextParagraphButton().requestFocus();
                         controller.processInputtedText();
                         break;
+                    case ALT:
                     case CONTROL:
                     case SHIFT:
                     case WINDOWS:
@@ -243,17 +273,70 @@ public class MainWindowController {
                         break;
                     case BACK_SPACE:
                         int ptr = controller.getPointer();
-                        controller.setPointer(--ptr);
-                        controller.clearLabel(controller.getPointer());
-                        controller.highlightCurrentPosition(controller.getPointer());
+                        if (keyEvent.isControlDown()) {
+                            int offset = controller.getWordLenghtToLeftFromPointer(ptr) - 1;
+                            for (int i = 0; i < offset; i++) {
+                                controller.clearLabel(controller.getPointer());
+                                controller.setPointer(--ptr);
+                            }
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        } else {
+
+                            controller.setPointer(--ptr);
+                            controller.clearLabel(controller.getPointer());
+                            controller.clearLabel(ptr + 1);
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        }
 
                         break;
                     case SLASH: {
                         int pointer = controller.getPointer();
                         if (keyEvent.isControlDown()) {
                             controller.putNextWordIntoLibraryFile(pointer);
+                            controller.highlightCurrentPosition(controller.getPointer());
                         } else {
                             controller.processKeyPut(code, pointer, keyEvent.isShiftDown());
+                            controller.setPointer(++pointer);
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        }
+                        break;
+                    }
+                    case DOWN: {
+                        int pointer = controller.getPointer();
+                        controller.clearLabel(pointer);
+                        controller.setPointer(pointer += controller.LABELS_IN_ROW);
+                        controller.highlightCurrentPosition(controller.getPointer());
+                        break;
+                    }  case UP: {
+                        int pointer = controller.getPointer();
+                        controller.clearLabel(pointer);
+                        controller.setPointer(pointer -= controller.LABELS_IN_ROW);
+                        controller.highlightCurrentPosition(controller.getPointer());
+                        break;
+                    } case LEFT: {
+                        int pointer = controller.getPointer();
+                        if (keyEvent.isControlDown()) {
+                            int offset = controller.getWordLenghtToLeftFromPointer(pointer) - 1;
+                            controller.clearLabel(controller.getPointer());
+                            controller.setPointer(pointer -= offset);
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        }else
+                        {
+                            controller.clearLabel(pointer);
+                            controller.setPointer(--pointer);
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        }
+                        break;
+                    }case RIGHT: {
+                        int pointer = controller.getPointer();
+                        if (keyEvent.isControlDown()) {
+                            int offset = controller.getWordLenghtToRightFromPointer(pointer) + 1;// -1??
+                            controller.clearLabel(controller.getPointer());
+                            controller.setPointer(pointer += offset);
+                            controller.highlightCurrentPosition(controller.getPointer());
+                        }else
+                        {
+                            controller.clearLabel(pointer);
                             controller.setPointer(++pointer);
                             controller.highlightCurrentPosition(controller.getPointer());
                         }

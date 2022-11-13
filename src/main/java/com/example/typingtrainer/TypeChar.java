@@ -21,7 +21,12 @@ public class TypeChar {
             this.isTypedCorrect = true;
         } else if ((this.correct == '—') && (this.typed == '-')) {
             this.isTypedCorrect = true;
-        } else {
+        } else if ((this.correct == '–') && (this.typed == '-')){
+            this.isTypedCorrect = true;
+        }else if ((this.correct == '…') && (this.typed == '.')){
+            this.isTypedCorrect = true;
+        }
+        else{
             this.isTypedCorrect = this.correct == this.typed;
         }
     }
