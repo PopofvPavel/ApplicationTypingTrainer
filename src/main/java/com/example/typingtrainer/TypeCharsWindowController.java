@@ -1,5 +1,9 @@
 package com.example.typingtrainer;
 
+import animatefx.animation.Pulse;
+import animatefx.animation.SlideInLeft;
+import animatefx.animation.SlideInRight;
+import animatefx.animation.SlideOutLeft;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -190,7 +194,9 @@ public class TypeCharsWindowController {
         setParagraphNumber(--paragraphNumber);
         setParagraphNumber(--paragraphNumber);
         try {
+            new SlideInLeft(this.vbox).play();
             startNewParagraph();
+
             getFocusOnTypeChars();
         } catch (IndexOutOfBoundsException exception) {
             System.out.println("Out of borders");
@@ -206,7 +212,11 @@ public class TypeCharsWindowController {
             System.out.println("YOU HAVE SUCCESSFULLY FINISHED THIS CHAPTER");
         }
         try {
+            //new SlideOutLeft(this.vbox).play();
+            //new SlideInRight(this.vbox).play();
+            new SlideInRight(this.vbox).play();
             startNewParagraph();
+
             getFocusOnTypeChars();
         } catch (IndexOutOfBoundsException exception) {
             System.out.println("Out of borders");

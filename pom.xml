@@ -27,6 +27,14 @@
         </dependency>
 
         <dependency>
+            <groupId>io.github.typhon0</groupId>
+            <artifactId>AnimateFX</artifactId>
+            <version>1.2.3</version>
+            <type>pom</type>
+        </dependency>
+
+
+        <dependency>
             <groupId>com.dlsc.formsfx</groupId>
             <artifactId>formsfx-core</artifactId>
             <version>11.3.2</version>
@@ -71,7 +79,8 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.typingtrainer/com.example.typingtrainer.TypingTrainerApplication</mainClass>
+                            <mainClass>com.example.typingtrainer/com.example.typingtrainer.TypingTrainerApplication
+                            </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

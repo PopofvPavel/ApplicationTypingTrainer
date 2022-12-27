@@ -14,7 +14,7 @@
             <Font size="28.0" />
          </font>
       </Button>
-      <Button fx:id="typeCharButton" layoutX="474.0" layoutY="301.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Button" />
+      <Button fx:id="typeCharButton" layoutX="35.0" layoutY="1024.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Button" visible="false" />
       <AnchorPane layoutX="14.0" layoutY="436.0" prefHeight="436.0" prefWidth="639.0" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="947.0" AnchorPane.topAnchor="436.0">
          <children>
             <TextField fx:id="pathToFileTextField" focusTraversable="false" layoutX="77.0" layoutY="111.0" prefHeight="55.0" prefWidth="536.0" promptText="Enter a path to the file" style="-fx-border-radius: 20; -fx-background-radius: 10101010;" text="Books/Harry Potter/CHAPTERS/CHAPTER FIFTEEN  " AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">

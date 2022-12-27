@@ -2,6 +2,9 @@ package com.example.typingtrainer;
 ///com.example.typingtrainer.MainWindowController
 
 
+import animatefx.animation.Bounce;
+import animatefx.animation.Pulse;
+import animatefx.animation.ZoomIn;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -66,7 +69,7 @@ public class MainWindowController {
     private Button saveFileButton;
     @FXML
     private Button defaultPathField;
-
+// #ABCDEF - аквамариновый
     @FXML
     void initialize() throws IOException {
         startButton.requestFocus();
@@ -74,6 +77,7 @@ public class MainWindowController {
         defaultRadioButton.setOnAction(actionEvent -> onDefaultRadioButtonClick());
         defaultPathField.setOnAction(actionEvent -> onDefaultPathFieldClick());
         this.pathToFileTextField.setText(getCurrentBookPath());
+
         saveFileButton.setOnAction(actionEvent -> {
             try {
                 onSaveFileButtonClick();
@@ -133,12 +137,14 @@ public class MainWindowController {
         defaultRadioButton.setSelected(true);
         textFieldRadioButton.setSelected(false);
         setStartButtonAction();
-
+        startButton.requestFocus();
     }
     private void onTextFieldRadioButtonClick() {
         textFieldRadioButton.setSelected(true);
         defaultRadioButton.setSelected(false);
         setStartButtonAction();
+        startButton.requestFocus();
+
     }
 
     private String getCurrentBookPath() throws IOException {
@@ -151,17 +157,18 @@ public class MainWindowController {
 
     private void onDefaultPathFieldClick() {
         this.pathToFileTextField.setText(this.DEFAULT_PATH);
+        new Pulse(this.defaultPathField).play();
+
     }
 
     private void onSaveFileButtonClick() throws IOException {
         String path = this.pathToFileTextField.getText();
         File currentBookPathFile = ProgramDataContainer.getCurrentBookPathFile();
-
         FileWriter fileWriter = new FileWriter(currentBookPathFile, false);
         fileWriter.write(path);
-
-
         fileWriter.close();
+
+        new Pulse(this.saveFileButton).play();
 
     }
 
