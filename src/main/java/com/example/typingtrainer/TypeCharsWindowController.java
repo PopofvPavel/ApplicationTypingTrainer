@@ -1,9 +1,7 @@
 package com.example.typingtrainer;
 
-import animatefx.animation.Pulse;
 import animatefx.animation.SlideInLeft;
 import animatefx.animation.SlideInRight;
-import animatefx.animation.SlideOutLeft;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -66,6 +64,8 @@ public class TypeCharsWindowController {
 
     @FXML
     private Label WPMLabel;
+    @FXML
+    private Label nextParagraphTextLabel;
 
     @FXML
     private Text accuracyPercent;
@@ -199,7 +199,7 @@ public class TypeCharsWindowController {
 
             getFocusOnTypeChars();
         } catch (IndexOutOfBoundsException exception) {
-            System.out.println("Out of borders");
+            System.out.println("Out of borders(On previous button click)");
             setParagraphNumber(++paragraphNumber);
             setParagraphNumber(++paragraphNumber);
         } catch (IOException e) {
@@ -219,7 +219,7 @@ public class TypeCharsWindowController {
 
             getFocusOnTypeChars();
         } catch (IndexOutOfBoundsException exception) {
-            System.out.println("Out of borders");
+            System.out.println("Out of borders(TypecharsWindowController)");
         } catch (IOException e) {
             System.err.println("Problems with focusing on typing labels");
         }
@@ -314,7 +314,7 @@ public class TypeCharsWindowController {
 
     private boolean isRussianKeyBoard(int pointer, boolean isShiftPressed, char ch) {
         return ((Character.toUpperCase(this.typeChars[pointer].getCorrect()) == RussianKeyCodeTranslator.getRussianChar(ch, isShiftPressed)) ||
-                (((this.typeChars[pointer].getCorrect()) == ',') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == '.') && this.isRussian && !isEnglishCharacter(this.typeChars[pointer - 1].getCorrect())) ||( ((this.typeChars[pointer].getCorrect()) == '…') && this.isRussian)
+                (((this.typeChars[pointer].getCorrect()) == ',') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == '.') && this.isRussian && !isEnglishCharacter(this.typeChars[pointer - 1].getCorrect())) || (((this.typeChars[pointer].getCorrect()) == '…') && this.isRussian)
                 || (((this.typeChars[pointer].getCorrect()) == '?') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == ';') && this.isRussian) || (((this.typeChars[pointer].getCorrect()) == ':') && this.isRussian));
     }
 
@@ -340,7 +340,11 @@ public class TypeCharsWindowController {
         if (code.equals(KeyCode.QUOTE)) {
             if ((this.typeChars[pointer].getCorrect() == '«') || (this.typeChars[pointer].getCorrect() == '»')) {
                 return '"';
-            } else if ((this.typeChars[pointer].getCorrect() == '‘')) {
+            } else if ((this.typeChars[pointer].getCorrect() == '“')) {
+                return '“';
+            } else if ((this.typeChars[pointer].getCorrect() == '”')){
+                return '”';
+            }else if ((this.typeChars[pointer].getCorrect() == '‘')) {
                 return '‘';
             } else if ((this.typeChars[pointer].getCorrect() == '’')) {
                 return '’';
@@ -406,6 +410,20 @@ public class TypeCharsWindowController {
         int paragraphLength = paragraph.length();
         this.markedWords = new ArrayList<>();
 
+        String nextParagraph = null;
+        if (paragraphNumber + 1 < paragraphs.size()) {
+            nextParagraph = this.paragraphs.get(paragraphNumber + 1);
+
+            if (nextParagraph != null) {
+                try {
+                    this.nextParagraphTextLabel.setText(nextParagraph.substring(0, 10) + "...");
+                } catch (StringIndexOutOfBoundsException e) {
+                    this.nextParagraphTextLabel.setText(nextParagraph.substring(0, 5) + "...");
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Error in next paragraph text");
+                }
+            }
+        }
         //setVisibleInfoLabels(false);
 
         this.typeChars = new TypeChar[paragraphLength];

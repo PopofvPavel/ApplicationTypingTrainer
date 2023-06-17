@@ -220,7 +220,7 @@ public class TypingWindowController {
 
             startNewParagraph();
         } catch (IndexOutOfBoundsException exception) {
-            System.out.println("Out of borders");
+            System.out.println("Out of borders on next paragraph click");
         }
 
     }
